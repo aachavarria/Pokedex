@@ -4,4 +4,8 @@
     <string name="password">Password</string>
     <string name="login">Login</string>
     <string name="home">Home</string>
+    <string name="news" />
+    <string name="places" />
+    <string name="music" />
+    <string name="favorites" />
 </resources>
