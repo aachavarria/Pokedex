@@ -17,9 +17,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints">
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -27,6 +29,9 @@
             style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:elevation="8dp"
+            app:itemIconSize="24dp"
+            android:backgroundTint="@color/design_default_color_surface"
             app:menu="@menu/bottom_navigation_menu" />
 
     </LinearLayout>
