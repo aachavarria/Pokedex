@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             app:elevation="8dp"
             app:itemIconSize="24dp"
-            android:backgroundTint="@color/design_default_color_surface"
+            android:background="@color/red"
             app:menu="@menu/bottom_navigation_menu" />
 
     </LinearLayout>
