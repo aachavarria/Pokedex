@@ -5,20 +5,15 @@
         android:id="@+id/page_1"
         android:enabled="true"
         android:icon="@drawable/ic_files"
-        android:title="@string/music"/>
+        android:title="@string/Trainer"/>
     <item
         android:id="@+id/page_2"
         android:enabled="true"
         android:icon="@drawable/ic_favorite"
-        android:title="@string/favorites"/>
+        android:title="@string/Favorites"/>
     <item
         android:id="@+id/page_3"
         android:enabled="true"
         android:icon="@drawable/ic_places"
-        android:title="@string/places"/>
-    <item
-        android:id="@+id/page_4"
-        android:enabled="true"
-        android:icon="@drawable/ic_new"
-        android:title="@string/news"/>
+        android:title="@string/Pokedex"/>
 </menu>
