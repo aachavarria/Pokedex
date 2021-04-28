@@ -6,13 +6,17 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.pokedex.R
+import com.example.pokedex.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         val host: NavHostFragment = supportFragmentManager
             .findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment? ?: return
@@ -22,7 +26,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupBottomNavMenu(navController: NavController) {
-        val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation_view)
+        val bottomNav = binding.bottomNavigationView
         bottomNav?.setupWithNavController(navController)
     }
 }
