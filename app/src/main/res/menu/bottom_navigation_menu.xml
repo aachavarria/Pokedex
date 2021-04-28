@@ -3,19 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/navigation_pokedex"
+        android:id="@+id/pokedexFragmentDest"
         android:enabled="true"
         android:icon="@drawable/ic_account"
         android:title="@string/app_name"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/navigation_favorites"
+        android:id="@+id/favoriteFragmentDest"
         android:enabled="true"
         android:icon="@drawable/ic_favorite"
         android:title="@string/app_favorites"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/navigation_trainer"
+        android:id="@+id/trainerFragmentDest"
         android:enabled="true"
         android:icon="@drawable/ic_grid"
         android:title="@string/app_trainer"

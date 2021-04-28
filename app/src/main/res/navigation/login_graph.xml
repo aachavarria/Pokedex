@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login_graph"
+    app:startDestination="@id/loginFragmentDest">
+
+    <fragment
+        android:id="@+id/loginFragmentDest"
+        android:name="com.example.pokedex.fragments.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragmentDest_to_signUpFragmentDest"
+            app:destination="@id/signUpFragmentDest" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpFragmentDest"
+        android:name="com.example.pokedex.fragments.SignUpFragment"
+        android:label="fragment_sign_up"
+        tools:layout="@layout/fragment_sign_up" />
+</navigation>
