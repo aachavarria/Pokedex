@@ -13,10 +13,18 @@
         <action
             android:id="@+id/action_loginFragmentDest_to_signUpFragmentDest"
             app:destination="@id/signUpFragmentDest" />
+        <action
+            android:id="@+id/action_loginFragmentDest_to_mainFragmentDest"
+            app:destination="@id/mainFragmentDest" />
     </fragment>
     <fragment
         android:id="@+id/signUpFragmentDest"
         android:name="com.example.pokedex.fragments.SignUpFragment"
         android:label="fragment_sign_up"
         tools:layout="@layout/fragment_sign_up" />
+    <fragment
+        android:id="@+id/mainFragmentDest"
+        android:name="com.example.pokedex.fragments.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main" />
 </navigation>

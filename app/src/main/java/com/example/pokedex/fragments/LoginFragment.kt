@@ -1,6 +1,5 @@
 package com.example.pokedex.fragments
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.pokedex.R
-import com.example.pokedex.activities.MainActivity
 import com.example.pokedex.databinding.FragmentLoginBinding
 
 class LoginFragment : Fragment(R.layout.fragment_login) {
@@ -19,7 +17,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -33,8 +31,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.loginButton.setOnClickListener {
-            val intent = Intent(context, MainActivity::class.java)
-            startActivity(intent)
+            findNavController().navigate(R.id.action_loginFragmentDest_to_mainFragmentDest)
         }
 
         binding.signUpButton.setOnClickListener {
