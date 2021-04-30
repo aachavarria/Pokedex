@@ -3,12 +3,12 @@ package com.example.pokedex.models
 import android.os.Parcel
 import android.os.Parcelable
 
-data class Pokemon(val id: Int, val name: String, val types: Array<String>, var imageURL: String) :
+data class Pokemon(val id: Int, val name: String, val types: Array<String>?, var imageURL: String) :
     Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readString()!!,
-        parcel.createStringArray()!!,
+        parcel.createStringArray(),
         parcel.readString()!!) {
     }
 
