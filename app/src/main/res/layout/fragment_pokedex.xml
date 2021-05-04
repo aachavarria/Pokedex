@@ -6,30 +6,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".fragments.PokedexFragment">
 
-
-    <Button
-        android:id="@+id/detailsButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button"
-        app:layout_constraintBottom_toTopOf="@+id/secondFragment"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/secondFragment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Pokedex"
-        android:textColor="#43a047"
-        android:textSize="40sp"
-        android:textStyle="italic|bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-    <!--  TODO: Paso 2 Agregamos el RecyclerView al layout del fragment/activity  -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/pokemonCardRecyclerView"
         android:layout_width="0dp"

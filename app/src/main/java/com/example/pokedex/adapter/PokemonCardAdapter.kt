@@ -11,7 +11,7 @@ class PokemonCardAdapter : RecyclerView.Adapter<PokemonCardAdapter.MyViewHolder>
 
     class MyViewHolder(val binding: PokemonCardBinding) : RecyclerView.ViewHolder(binding.root)
 
-    var pokemons: List<Pokemon> = emptyList()
+    var pokemonList: List<Pokemon> = emptyList()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -22,11 +22,11 @@ class PokemonCardAdapter : RecyclerView.Adapter<PokemonCardAdapter.MyViewHolder>
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val pokemon = pokemons[position]
+        val pokemon = pokemonList[position]
         Picasso.get().load("https://pokeres.bastionbot.org/images/pokemon/${pokemon.id}.png").into(holder.binding.imageView);
         holder.binding.textView.text = pokemon.name
     }
 
-    override fun getItemCount(): Int = pokemons.size
+    override fun getItemCount(): Int = pokemonList.size
 
 }
