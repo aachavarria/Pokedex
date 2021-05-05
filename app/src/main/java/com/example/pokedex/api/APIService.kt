@@ -10,8 +10,8 @@ import retrofit2.http.Query
 interface APIService {
     @GET("pokemon")
     fun getPokemonList(
-        @Query("limit") limit: Int? = null,
-        @Query("offset") offset: Int? = null
+        @Query("offset") offset: Int? = null,
+        @Query("limit") limit: Int? = null
     ): Single<PokemonResponse>
 
     @GET("pokemon/{id}")

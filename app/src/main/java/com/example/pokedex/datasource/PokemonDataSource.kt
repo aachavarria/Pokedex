@@ -9,9 +9,13 @@ import com.example.pokedex.utils.Constants.IMAGE_URL
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 
-class PokemonDataSource(private val apiService: APIService) : RxPagingSource<String, Pokemon>() {
-    override fun loadSingle(params: LoadParams<String>): Single<LoadResult<String, Pokemon>> {
-        return apiService.getPokemonList()
+class PokemonDataSource(private val apiService: APIService) : RxPagingSource<Int, Pokemon>() {
+    override fun loadSingle(params: LoadParams<Int>): Single<LoadResult<Int, Pokemon>> {
+        val page = params.key ?: 0
+        val limit = 20
+        val offset = page * limit
+        val prevKey = if (page == 0) null else page - 0
+        return apiService.getPokemonList(offset, limit)
             .subscribeOn(Schedulers.io())
             .map { result ->
                 LoadResult.Page(
@@ -24,13 +28,13 @@ class PokemonDataSource(private val apiService: APIService) : RxPagingSource<Str
                             "${IMAGE_URL}${uri.lastPathSegment}.png"
                         )
                     },
-                    prevKey = result.previous,
-                    nextKey = result.previous
+                    prevKey,
+                    nextKey = page.plus(1)
                 )
             }
     }
 
-    override fun getRefreshKey(state: PagingState<String, Pokemon>): String? {
-        return state.anchorPosition?.let { state.closestItemToPosition(it)?.id }
+    override fun getRefreshKey(state: PagingState<Int, Pokemon>): Int? {
+        return state.anchorPosition?.let { state.closestItemToPosition(it)?.id?.toInt() }
     }
 }
