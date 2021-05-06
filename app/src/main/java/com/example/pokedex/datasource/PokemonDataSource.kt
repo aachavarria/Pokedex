@@ -1,6 +1,7 @@
 package com.example.pokedex.datasource
 
 import android.net.Uri
+import android.util.Log
 import androidx.paging.PagingState
 import androidx.paging.rxjava2.RxPagingSource
 import com.example.pokedex.api.APIService
@@ -15,6 +16,8 @@ class PokemonDataSource(private val apiService: APIService) : RxPagingSource<Int
         val limit = 20
         val offset = page * limit
         val prevKey = if (page == 0) null else page - 0
+        Log.e("offset", offset.toString())
+        Log.e("limit", limit.toString())
         return apiService.getPokemonList(offset, limit)
             .subscribeOn(Schedulers.io())
             .map { result ->
