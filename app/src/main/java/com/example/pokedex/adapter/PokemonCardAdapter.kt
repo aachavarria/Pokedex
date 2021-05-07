@@ -1,6 +1,7 @@
 package com.example.pokedex.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
@@ -36,7 +37,17 @@ class PokemonCardAdapter : PagingDataAdapter<Pokemon, PokemonCardAdapter.MyViewH
             override fun onError(e: java.lang.Exception?) {
             }
         })
-        holder.binding.textView.text = pokemon?.name
+        if (pokemon != null) {
+            holder.binding.textView.text = pokemon.name
+            holder.binding.type1.text = pokemon.types[0]
+            // TODO: no se como se hace jojo pero esto CardType.grass.color devuelve los colores
+            // hay q agregar todos los colores de las cards
+            // holder.binding.textView.textColor = CardType.grass.color
+            if(pokemon.types.size > 1) {
+                holder.binding.type2.text = pokemon.types[1]
+                holder.binding.type2.visibility = View.VISIBLE
+            }
+        }
     }
 
     object PokemonComparator : DiffUtil.ItemCallback<Pokemon>() {

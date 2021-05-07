@@ -1,3 +1,4 @@
 package com.example.pokedex.models
 
-data class Pokemon(var id: String?, val name: String, val url: String, var imageUrl: String?)
+data class Pokemon(var id: Int?, val name: String, var imageUrl: String?, var types: List<String> ){
+}

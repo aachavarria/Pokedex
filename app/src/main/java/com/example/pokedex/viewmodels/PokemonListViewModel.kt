@@ -14,7 +14,7 @@ class PokemonListViewModel() : ViewModel() {
 
     private var service: APIService = ServiceBuilder.buildService(APIService::class.java)
 
-    val listData = Pager(PagingConfig(pageSize = 20)) {
+    val listData = Pager(PagingConfig(pageSize = 10)) {
         PokemonDataSource(service)
     }.observable.cachedIn(viewModelScope)
 
