@@ -19,8 +19,7 @@ class PokemonDataSource(private val apiService: APIService) : RxPagingSource<Int
         Log.e("offset", offset.toString())
         Log.e("limit", limit.toString())
         val paramObject = JSONObject()
-        // TODO: Agregar offset y limit, validar cuando no hay más items
-        paramObject.put("query", "{list:pokemon_v2_pokemonspecies{id name details: pokemon_v2_pokemons{types:pokemon_v2_pokemontypes{type: pokemon_v2_type {name}}}}}")
+        paramObject.put("query", "{list:pokemon_v2_pokemonspecies(offset:${offset},limit:${limit},order_by:{id:asc}){id name details:pokemon_v2_pokemons{types:pokemon_v2_pokemontypes{type:pokemon_v2_type {name}}}}}")
 
         return apiService.getPokemonList(paramObject.toString())
             .subscribeOn(Schedulers.io())
@@ -35,7 +34,7 @@ class PokemonDataSource(private val apiService: APIService) : RxPagingSource<Int
                         )
                     },
                     prevKey,
-                    nextKey = page.plus(1)
+                    nextKey = if(result.data.list.size == limit) page.plus(1) else null
                 )
             }
     }
