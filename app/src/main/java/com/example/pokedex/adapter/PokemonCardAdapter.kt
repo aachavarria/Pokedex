@@ -39,6 +39,7 @@ class PokemonCardAdapter : PagingDataAdapter<Pokemon, PokemonCardAdapter.MyViewH
         })
         if (pokemon != null) {
             holder.binding.textView.text = pokemon.name
+            holder.binding.textView2.text = pokemon.id.toString()
             holder.binding.type1.text = pokemon.types[0]
             // TODO: no se como se hace jojo pero esto CardType.grass.color devuelve los colores
             // hay q agregar todos los colores de las cards
