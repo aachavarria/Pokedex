@@ -13,7 +13,7 @@ class EmptyInfoView  @JvmOverloads constructor(
     private lateinit var binding: EmptyViewBinding
 
     init {
-        binding = EmptyViewBinding.inflate( LayoutInflater.from(context), this, false)
+        binding = EmptyViewBinding.inflate( LayoutInflater.from(context), this, true)
         attrs.let {
             val typedArray = context.theme.obtainStyledAttributes(
                     attrs,
