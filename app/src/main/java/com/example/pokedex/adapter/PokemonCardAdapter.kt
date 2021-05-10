@@ -1,9 +1,10 @@
 package com.example.pokedex.adapter
 import android.content.Context
-import android.util.Log
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
@@ -58,13 +59,10 @@ class PokemonCardAdapter : PagingDataAdapter<Pokemon, PokemonCardAdapter.MyViewH
             holder.binding.textView2.text = pokemonNumberText
             holder.binding.type1.text = pokemon.types[0].capitalize()
             val context: Context =  holder.binding.card.context
-            Log.e(
-                "error", "card_${pokemon.types[0]}")
-            val resourceID: Int = holder.binding.card.resources.getIdentifier("card_${pokemon.types[0]}", "color", context.packageName)
-            holder.binding.card.setCardBackgroundColor( holder.binding.card.context.getColor(resourceID))
-            // TODO: no se como se hace jojo pero esto CardType.grass.color devuelve los colores
-            // hay q agregar todos los colores de las cards
-            // holder.binding.textView.textColor = CardType.grass.color
+            val cardColorID: Int = holder.binding.card.resources.getIdentifier("card_${pokemon.types[0]}", "color", context.packageName)
+            val chipColorID: Int = holder.binding.card.resources.getIdentifier("chip_${pokemon.types[0]}", "color", context.packageName)
+            holder.binding.card.setCardBackgroundColor( holder.binding.card.context.getColor(cardColorID))
+            holder.binding.type1.chipBackgroundColor = ColorStateList.valueOf(ContextCompat.getColor(context, chipColorID))
             if(pokemon.types.size > 1) {
                 holder.binding.type2.text = pokemon.types[1].capitalize()
                 holder.binding.type2.visibility = View.VISIBLE
