@@ -4,9 +4,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.example.pokedex.R
 import com.example.pokedex.databinding.PokemonCardBinding
 import com.example.pokedex.models.Pokemon
 import com.squareup.picasso.Callback
@@ -29,6 +31,9 @@ class PokemonCardAdapter : PagingDataAdapter<Pokemon, PokemonCardAdapter.MyViewH
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        holder.itemView.setOnClickListener {
+            holder.itemView.findNavController().navigate(R.id.action_pokedexFragmentDest_to_detailsFragmentDest)
+        }
         val pokemon = getItem(position)
         Picasso.get().load(pokemon?.imageUrl).fit().noFade().centerInside().into(holder.binding.imageView, object: Callback {
             override fun onSuccess() {
