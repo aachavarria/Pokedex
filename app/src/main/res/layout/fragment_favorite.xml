@@ -7,18 +7,15 @@
     android:layout_height="match_parent"
     tools:context=".fragments.FavoriteFragment">
 
-    <TextView
-        android:id="@+id/secondFragment"
-        android:layout_width="wrap_content"
+    <com.example.pokedex.widgets.EmptyInfoView
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Favorites"
-        android:textColor="#43a047"
-        android:textSize="40sp"
-        android:textStyle="italic|bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="No favorites pokemon"
+        app:subtitle="Try to add a pokemon to your favorites"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
