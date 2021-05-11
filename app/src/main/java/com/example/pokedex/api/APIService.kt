@@ -12,9 +12,7 @@ interface APIService {
     @POST(" ")
     fun getPokemonList(
         @Body body: String
-//        @Query("offset") offset: Int? = null,
-//        @Query("limit") limit: Int? = null
-    ): Single<PokemonResponse>
+    ) : Single<PokemonResponse>
 
 //    @GET("pokemon/{id}")
 //    fun getPokemonList(@Path("id") id: Int): Single<PokemonResponse>
