@@ -12,7 +12,7 @@ class EmptyInfoView  @JvmOverloads constructor(
         context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, defStyleRes: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr){
     private var binding: FragmentEmptyStateBinding =
-        FragmentEmptyStateBinding.inflate( LayoutInflater.from(context), this, true)
+        FragmentEmptyStateBinding.inflate( LayoutInflater.from(context), this)
 
     init {
         attrs.let {
