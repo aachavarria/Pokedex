@@ -15,6 +15,8 @@
         <item name="bottomNavigationStyle">@style/Widget.App.BottomNavigationView</item>
     </style>
 
+
+    <!-- region BottomNavigationView  -->
     <style name="Widget.App.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
         <item name="materialThemeOverlay">@style/ThemeOverlay.App.BottomNavigationView</item>
     </style>
@@ -24,5 +26,21 @@
         <item name="colorOnPrimary">@color/white</item>
         <item name="itemIconTint">@color/pink_menu</item>
     </style>
+    <!-- endregion  -->
+
+    <!-- region TextInputEditText  -->
+    <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">@color/blue_500</color>
+    <!-- endregion  -->
+
+    <!-- region Button  -->
+    <style name="Widget.App.Button.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.Button.TextButton</item>
+    </style>
+
+    <style name="ThemeOverlay.App.Button.TextButton" parent="">
+        <item name="colorPrimary">@color/orange_500</item>
+    </style>
+    <!-- endregion  -->
+
 
 </resources>
