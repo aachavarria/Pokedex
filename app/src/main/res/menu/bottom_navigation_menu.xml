@@ -5,8 +5,8 @@
     <item
         android:id="@+id/pokedexFragmentDest"
         android:enabled="true"
-        android:icon="@drawable/ic_account"
-        android:title="@string/app_trainer"
+        android:icon="@drawable/ic_grid"
+        android:title="@string/app_name"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/favoriteFragmentDest"
@@ -17,7 +17,7 @@
     <item
         android:id="@+id/trainerFragmentDest"
         android:enabled="true"
-        android:icon="@drawable/ic_grid"
-        android:title="@string/app_name"
+        android:icon="@drawable/ic_account"
+        android:title="@string/app_trainer"
         app:showAsAction="ifRoom" />
 </menu>
