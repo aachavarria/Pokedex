@@ -7,12 +7,18 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.pokedex.R
 import com.example.pokedex.databinding.FragmentEmptyStateBinding
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 
 class EmptyInfoView  @JvmOverloads constructor(
         context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, defStyleRes: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr){
     private var binding: FragmentEmptyStateBinding =
         FragmentEmptyStateBinding.inflate( LayoutInflater.from(context), this)
+
+    private val clicksAcceptor = PublishSubject.create<Unit>()
+
+    val itemClicked: Observable<Unit> = clicksAcceptor.hide()
 
     init {
         attrs.let {
@@ -33,7 +39,11 @@ class EmptyInfoView  @JvmOverloads constructor(
             button?.let {
                 binding.button.text = it
                 binding.button.visibility = View.VISIBLE
+                binding.button.setOnClickListener {
+                    clicksAcceptor.onNext(Unit)
+                }
             }
+
             typedArray.recycle()
         }
     }

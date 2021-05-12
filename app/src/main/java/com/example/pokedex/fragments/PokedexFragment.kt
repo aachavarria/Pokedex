@@ -87,5 +87,13 @@ class PokedexFragment : Fragment(R.layout.fragment_pokedex) {
                     viewModel.inputs.keyword.onNext(it)
                 }
         )
+
+        disposables.add(
+            binding.EmptyResultsView.itemClicked
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    binding.searchFieldTextInput.setText("")
+                }
+        )
     }
 }

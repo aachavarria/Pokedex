@@ -14,7 +14,7 @@
         android:rotationX="180"
         android:src="@drawable/pokeball"
         android:translationX="100dp"
-        android:translationY="100dp"
+        android:translationY="98dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:tint="@color/green_500" />
