@@ -55,12 +55,17 @@ class PokedexFragment : Fragment(R.layout.fragment_pokedex) {
 
         adapter.addLoadStateListener { loadState ->
             if (loadState.source.refresh is LoadState.NotLoading && loadState.append.endOfPaginationReached && adapter.itemCount < 1) {
-
                 binding.pokemonCardRecyclerView.isVisible = false
+                binding.progressBar.isVisible = false
                 binding.EmptyResultsView.isVisible = true
-            } else {
-                binding.pokemonCardRecyclerView.isVisible = true
+            } else if(loadState.source.refresh is LoadState.Loading) {
+                binding.pokemonCardRecyclerView.isVisible = false
                 binding.EmptyResultsView.isVisible = false
+                binding.progressBar.isVisible = true
+            } else {
+                binding.EmptyResultsView.isVisible = false
+                binding.progressBar.isVisible = false
+                binding.pokemonCardRecyclerView.isVisible = true
             }
         }
 
