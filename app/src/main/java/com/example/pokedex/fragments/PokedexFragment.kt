@@ -4,12 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
+import androidx.paging.LoadState
 import com.example.pokedex.R
 import com.example.pokedex.adapter.PokemonCardAdapter
 import com.example.pokedex.databinding.FragmentPokedexBinding
 import com.example.pokedex.viewmodels.PokemonListViewModel
+import com.example.pokedex.viewmodels.PokemonListViewModelType
 import com.jakewharton.rxbinding2.widget.RxTextView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -20,9 +23,15 @@ class PokedexFragment : Fragment(R.layout.fragment_pokedex) {
     private var _binding: FragmentPokedexBinding? = null
     private val binding: FragmentPokedexBinding get() = _binding!!
     private val adapter = PokemonCardAdapter()
-    private val viewModel: PokemonListViewModel by viewModels()
-
     private val disposables = CompositeDisposable()
+
+    private lateinit var viewModel: PokemonListViewModelType
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        viewModel = ViewModelProvider(this).get(PokemonListViewModel::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,11 +48,24 @@ class PokedexFragment : Fragment(R.layout.fragment_pokedex) {
         _binding = null
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.pokemonCardRecyclerView.adapter = adapter
+
+        adapter.addLoadStateListener { loadState ->
+            if (loadState.source.refresh is LoadState.NotLoading && loadState.append.endOfPaginationReached && adapter.itemCount < 1) {
+
+                binding.pokemonCardRecyclerView.isVisible = false
+                binding.EmptyResultsView.isVisible = true
+            } else {
+                binding.pokemonCardRecyclerView.isVisible = true
+                binding.EmptyResultsView.isVisible = false
+            }
+        }
+
         disposables.add(
-            viewModel.listData
+            viewModel.outputs.listData
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
@@ -57,7 +79,7 @@ class PokedexFragment : Fragment(R.layout.fragment_pokedex) {
                 .observeOn(AndroidSchedulers.mainThread())
                 .map { it.toString() }
                 .subscribe {
-                    viewModel.keyword.onNext(it)
+                    viewModel.inputs.keyword.onNext(it)
                 }
         )
     }

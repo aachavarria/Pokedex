@@ -12,23 +12,34 @@ import com.example.pokedex.api.ServiceBuilder
 import com.example.pokedex.datasource.PokemonDataSource
 import com.example.pokedex.models.Pokemon
 import io.reactivex.Observable
+import io.reactivex.Observer
 import io.reactivex.subjects.BehaviorSubject
 
-class PokemonListViewModel() : ViewModel() {
+interface PokemonListViewModelInputs {
+    val keyword: Observer<String>
+}
+
+interface PokemonListViewModelOutputs {
+    val listData: Observable<PagingData<Pokemon>>
+}
+
+interface PokemonListViewModelType {
+    val inputs: PokemonListViewModelInputs
+    val outputs: PokemonListViewModelOutputs
+}
+
+class PokemonListViewModel(
+) : ViewModel(), PokemonListViewModelInputs, PokemonListViewModelOutputs, PokemonListViewModelType {
 
     private var service: APIService = ServiceBuilder.buildService(APIService::class.java)
 
-    val keyword = BehaviorSubject.create<String>()
+    override val inputs: PokemonListViewModelInputs = this
+    override val outputs: PokemonListViewModelOutputs = this
 
-    val listData: Observable<PagingData<Pokemon>> = keyword.switchMap { keyword ->
+    override val keyword = BehaviorSubject.create<String>()
+    override val listData: Observable<PagingData<Pokemon>> = keyword.switchMap { keyword ->
         Pager(PagingConfig(pageSize = 10)) {
             PokemonDataSource(service, keyword)
         }.observable.cachedIn(viewModelScope)
     }
-
-
-//    val listData = Pager(PagingConfig(pageSize = 10)) {
-//        PokemonDataSource(service)
-//    }.observable.cachedIn(viewModelScope)
-
 }
