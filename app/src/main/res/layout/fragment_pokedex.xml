@@ -24,11 +24,12 @@
         app:startIconTint="@color/blue_500">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/searchFieldTextInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:inputType="text"
-            android:imeOptions="actionGo"
+            android:imeOptions="actionDone"
          />
     </com.google.android.material.textfield.TextInputLayout>
 
