@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.paging.LoadState
 import com.example.pokedex.R
 import com.example.pokedex.adapter.PokemonCardAdapter
@@ -93,6 +94,15 @@ class PokedexFragment : Fragment(R.layout.fragment_pokedex) {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     binding.searchFieldTextInput.setText("")
+                }
+        )
+
+        disposables.add(
+            adapter.itemClicked
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    val action = PokedexFragmentDirections.actionPokedexFragmentDestToDetailsFragmentDest(it)
+                    view.findNavController().navigate(action)
                 }
         )
     }
