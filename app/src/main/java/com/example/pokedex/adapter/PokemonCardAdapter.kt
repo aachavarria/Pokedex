@@ -5,21 +5,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.navigation.findNavController
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.pokedex.R
 import com.example.pokedex.databinding.PokemonCardBinding
 import com.example.pokedex.models.Pokemon
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 
 
 class PokemonCardAdapter : PagingDataAdapter<Pokemon, PokemonCardAdapter.MyViewHolder>(
     PokemonComparator
 ) {
     class MyViewHolder(val binding: PokemonCardBinding) : RecyclerView.ViewHolder(binding.root)
+
+    private val clicksAcceptor = PublishSubject.create<Pokemon>()
+
+    val itemClicked: Observable<Pokemon> = clicksAcceptor.hide()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         return MyViewHolder(
@@ -32,10 +36,12 @@ class PokemonCardAdapter : PagingDataAdapter<Pokemon, PokemonCardAdapter.MyViewH
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.itemView.setOnClickListener {
-            holder.itemView.findNavController().navigate(R.id.action_pokedexFragmentDest_to_detailsFragmentDest)
-        }
         val pokemon = getItem(position)
+        holder.itemView.setOnClickListener {
+            if (pokemon != null) {
+                clicksAcceptor.onNext(pokemon)
+            }
+        }
         Picasso.get().load(pokemon?.imageUrl).fit().noFade().centerInside().into(holder.binding.imageView, object: Callback {
             override fun onSuccess() {
                 holder.binding.imageView.alpha = 0f

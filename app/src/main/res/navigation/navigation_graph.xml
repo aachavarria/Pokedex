@@ -20,8 +20,8 @@
         android:label="fragment_details"
         tools:layout="@layout/fragment_details" >
         <argument
-            android:name="id"
-            app:argType="integer" />
+            android:name="pokemon"
+            app:argType="com.example.pokedex.models.Pokemon" />
     </fragment>
     <fragment
         android:id="@+id/favoriteFragmentDest"

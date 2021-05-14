@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import com.example.pokedex.R
 import com.example.pokedex.adapter.ViewPagerDetailsAdapter
 import com.example.pokedex.databinding.FragmentDetailsBinding
@@ -15,6 +16,9 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
     private lateinit var adapter: ViewPagerDetailsAdapter
     private var _binding: FragmentDetailsBinding? = null
     private val binding: FragmentDetailsBinding get() = _binding!!
+
+    val args: DetailsFragmentArgs by navArgs()
+
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -32,6 +36,9 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val pokemon = args.pokemon
+
+        binding.pokemonName.text = pokemon.name.capitalize()
 
         adapter = ViewPagerDetailsAdapter(this)
         binding.viewPager.adapter = adapter
