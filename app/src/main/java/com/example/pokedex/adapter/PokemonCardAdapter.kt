@@ -66,6 +66,8 @@ class PokemonCardAdapter : PagingDataAdapter<Pokemon, PokemonCardAdapter.MyViewH
             if(pokemon.types.size > 1) {
                 holder.binding.type2.text = pokemon.types[1].capitalize()
                 holder.binding.type2.visibility = View.VISIBLE
+                val chip2ColorID: Int = holder.binding.card.resources.getIdentifier("chip_${pokemon.types[1]}", "color", context.packageName)
+                holder.binding.type2.chipBackgroundColor = ColorStateList.valueOf(ContextCompat.getColor(context, chip2ColorID))
             }
         }
     }
