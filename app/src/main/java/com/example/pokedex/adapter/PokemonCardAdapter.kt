@@ -53,12 +53,11 @@ class PokemonCardAdapter : PagingDataAdapter<Pokemon, PokemonCardAdapter.MyViewH
         })
         if (pokemon != null) {
             holder.binding.textView.text = pokemon.name.capitalize()
-            var pokemonNumberText = ""
-            when (pokemon.id) {
-                in 1..9 -> pokemonNumberText = "#00" + pokemon.id.toString()
-                in 10..99 ->  pokemonNumberText = "#0" + pokemon.id.toString()
+            val pokemonNumberText = when (pokemon.id) {
+                in 1..9 -> "#00" + pokemon.id.toString()
+                in 10..99 -> "#0" + pokemon.id.toString()
                 else -> { // Note the block
-                    pokemonNumberText = '#' + pokemon.id.toString().capitalize()
+                    '#' + pokemon.id.toString().capitalize()
                 }
             }
 
@@ -74,6 +73,8 @@ class PokemonCardAdapter : PagingDataAdapter<Pokemon, PokemonCardAdapter.MyViewH
                 holder.binding.type2.visibility = View.VISIBLE
                 val chip2ColorID: Int = holder.binding.card.resources.getIdentifier("chip_${pokemon.types[1]}", "color", context.packageName)
                 holder.binding.type2.chipBackgroundColor = ColorStateList.valueOf(ContextCompat.getColor(context, chip2ColorID))
+            } else {
+                holder.binding.type2.visibility = View.GONE
             }
         }
     }

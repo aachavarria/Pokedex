@@ -12,6 +12,7 @@ import androidx.paging.LoadState
 import com.example.pokedex.R
 import com.example.pokedex.adapter.PokemonCardAdapter
 import com.example.pokedex.databinding.FragmentPokedexBinding
+import com.example.pokedex.utils.Utils.hideKeyboard
 import com.example.pokedex.viewmodels.PokemonListViewModel
 import com.example.pokedex.viewmodels.PokemonListViewModelType
 import com.jakewharton.rxbinding2.widget.RxTextView
@@ -19,6 +20,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
+
 
 class PokedexFragment : Fragment(R.layout.fragment_pokedex) {
     private var _binding: FragmentPokedexBinding? = null
@@ -101,7 +103,11 @@ class PokedexFragment : Fragment(R.layout.fragment_pokedex) {
             adapter.itemClicked
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    val action = PokedexFragmentDirections.actionPokedexFragmentDestToDetailsFragmentDest(it)
+                    activity?.let { it1 -> hideKeyboard(it1) }
+                    val action =
+                        PokedexFragmentDirections.actionPokedexFragmentDestToDetailsFragmentDest(
+                            it
+                        )
                     view.findNavController().navigate(action)
                 }
         )
