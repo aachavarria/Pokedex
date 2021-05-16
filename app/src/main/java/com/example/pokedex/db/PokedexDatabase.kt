@@ -8,23 +8,23 @@ import com.example.pokedex.db.dao.UserDao
 import com.example.pokedex.db.entities.User
 
 @Database(entities = [User::class], version = 1)
-abstract class UserDatabase : RoomDatabase() {
+abstract class PokedexDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao?
 
     companion object {
         private const val dbName = "user"
-        private var userDatabase: UserDatabase? = null
+        private var pokedexDatabase: PokedexDatabase? = null
         @Synchronized
-        fun getUserDatabase(context: Context?): UserDatabase? {
-            if (userDatabase == null) {
-                userDatabase = Room.databaseBuilder(
+        fun getUserDatabase(context: Context?): PokedexDatabase? {
+            if (pokedexDatabase == null) {
+                pokedexDatabase = Room.databaseBuilder(
                     context!!,
-                    UserDatabase::class.java, dbName
+                    PokedexDatabase::class.java, dbName
                 )
                     .fallbackToDestructiveMigration()
                     .build()
             }
-            return userDatabase
+            return pokedexDatabase
         }
     }
 }

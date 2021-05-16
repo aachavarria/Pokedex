@@ -1,16 +1,18 @@
 package com.example.pokedex.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.viewModels
 import com.example.pokedex.R
 import com.example.pokedex.databinding.FragmentSignUpBinding
-import com.example.pokedex.db.entities.User
+import com.example.pokedex.viewmodels.CreateUserViewModel
 
 class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
+    val viewModel: CreateUserViewModel by viewModels()
     private var _binding: FragmentSignUpBinding? = null
     private val binding: FragmentSignUpBinding get() = _binding!!
 
@@ -29,13 +31,14 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        super.onViewCreated(view,savedInstanceState)
         val userId = binding.userId
         val password = binding.password
         val email = binding.emailAddress
-        val registerButton = binding.registerButton
-        registerButton.setOnClickListener {
-            findNavController().navigate(R.id.loginFragmentDest)
+
+        binding.registerButton.setOnClickListener {
+//            findNavController().navigate(R.id.loginFragmentDest)
+            viewModel.createUser(userId.toString(), password.toString(), email.toString())
         }
     }
 }
