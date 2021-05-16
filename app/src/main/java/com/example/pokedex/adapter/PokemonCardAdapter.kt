@@ -76,6 +76,8 @@ class PokemonCardAdapter : PagingDataAdapter<Pokemon, PokemonCardAdapter.MyViewH
             } else {
                 holder.binding.type2.visibility = View.GONE
             }
+
+            
         }
     }
 
