@@ -111,5 +111,13 @@ class PokedexFragment : Fragment(R.layout.fragment_pokedex) {
                     view.findNavController().navigate(action)
                 }
         )
+
+        disposables.add(
+            adapter.favoriteClicked
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                        // Guardar it
+                }
+        )
     }
 }
