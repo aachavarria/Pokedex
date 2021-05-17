@@ -23,7 +23,10 @@ class PokemonCardAdapter : PagingDataAdapter<Pokemon, PokemonCardAdapter.MyViewH
 
     private val clicksAcceptor = PublishSubject.create<Pokemon>()
 
+    private val favoriteAcceptor = PublishSubject.create<Pokemon>()
+
     val itemClicked: Observable<Pokemon> = clicksAcceptor.hide()
+    val favoriteClicked: Observable<Pokemon> = favoriteAcceptor.hide()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         return MyViewHolder(
@@ -42,6 +45,12 @@ class PokemonCardAdapter : PagingDataAdapter<Pokemon, PokemonCardAdapter.MyViewH
                 clicksAcceptor.onNext(pokemon)
             }
         }
+        holder.binding.favoriteIcon.setOnCheckedChangeListener { checkBox, isChecked ->
+            if (pokemon != null) {
+                favoriteAcceptor.onNext(pokemon)
+            }
+        }
+
         Picasso.get().load(pokemon?.imageUrl).fit().noFade().centerInside().into(holder.binding.imageView, object: Callback {
             override fun onSuccess() {
                 holder.binding.imageView.alpha = 0f
@@ -76,8 +85,6 @@ class PokemonCardAdapter : PagingDataAdapter<Pokemon, PokemonCardAdapter.MyViewH
             } else {
                 holder.binding.type2.visibility = View.GONE
             }
-
-            
         }
     }
 

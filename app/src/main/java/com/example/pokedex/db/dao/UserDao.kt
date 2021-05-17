@@ -8,6 +8,8 @@ import androidx.room.Transaction
 import com.example.pokedex.db.entities.User
 //import com.example.pokedex.db.entities.UserFavorites
 
+//import com.example.pokedex.db.entities.UserFavorites
+
 @Dao
 interface UserDao {
     @Query("SELECT * FROM users")
