@@ -1,6 +1,7 @@
 package com.example.pokedex.repositories
 
 import android.content.Context
+import androidx.lifecycle.LiveData
 import androidx.room.Room
 import com.example.pokedex.db.PokedexDatabase
 import com.example.pokedex.db.entities.Favorite
@@ -16,10 +17,10 @@ class PokedexRepository(context: Context) {
     }
 
     fun insertFavorite(favorite: Favorite) {
-        db.favoriteDao()?.registerFavorite(favorite)
+        db.favoriteDao().registerFavorite(favorite)
     }
 
-    fun getFavorites(userId: Int) {
-        db.favoriteDao()?.loadAllById(2)
+    fun getFavorites(userId: Int) : LiveData<List<Favorite>> {
+       return db.favoriteDao().loadAllById(2)
     }
 }

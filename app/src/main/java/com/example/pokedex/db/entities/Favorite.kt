@@ -14,6 +14,9 @@ import androidx.room.*
 data class Favorite(
     @ColumnInfo(name = "userId") val userId: Int,
     @ColumnInfo(name = "pokemonId") val pokemonId: Int,
+    @ColumnInfo(name = "imageUrl") val imageUrl: String,
+    @ColumnInfo(name = "name") val name: String,
+    @ColumnInfo(name = "types") val types: String,
 ) {
     @PrimaryKey(autoGenerate = true) var id: Int = 0
 }
