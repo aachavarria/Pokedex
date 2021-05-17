@@ -136,7 +136,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                     val pokemonDetail: PokemonDetail = PokemonDetail(
                         result.data.details[0].pokemon[0].height,
                         result.data.details[0].pokemon[0].weight,
-                        result.data.details[0].pokemon[0].about.description[0].text,
+                        result.data.details[0].pokemon[0].about.description[0].text.replace("\n"," "),
                         result.data.details[0].pokemon[0].about.category[0].genus,
                         result.data.details[0].pokemon[0].abilities.map { abilities -> abilities.ability.name },
                         result.data.details[0].cycle,
