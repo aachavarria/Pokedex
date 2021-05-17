@@ -36,7 +36,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
                     binding.progressBar.visibility = View.GONE
                     val pokemonDetails = Gson().fromJson(data, PokemonDetail::class.java)
                     binding.description.text = pokemonDetails.description
-                    binding.ability.text = pokemonDetails.abilities[0].capitalize()
+                    binding.ability.text = pokemonDetails.abilities[0]
                     binding.weight.text = "${(pokemonDetails.height / 10.0f)} kg"
                     binding.height.text = "${(pokemonDetails.height / 10.0f)} m"
                     binding.category.text = pokemonDetails.category
@@ -75,14 +75,13 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
                         }
                         8 -> {
                             binding.genderTextView1.text = "100% female"
-                            binding.genderTextView1.setTextColor(R.color.orange_500)
+                            binding.genderTextView1.setTextColor(resources.getColor(R.color.orange_500))
                         }
-                        else -> { // Note the block
+                        else -> {
                             binding.genderTextView1.text = "None (unknown gender)"
                         }
                     }
 
-//                    binding.genderTextView.text = pokemonDetails.genderRate.toString()
                     binding.eggCycleTextView.text = pokemonDetails.eggCycle.toString()
                     binding.eggGroupsTextView.text = pokemonDetails.eggGroups.joinToString()
                 })
