@@ -1,7 +1,6 @@
 package com.example.pokedex.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,13 +32,15 @@ class EvolutionFragment : Fragment(R.layout.fragment_evolution){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        RxBus.instance?.listen()?.let {
+        RxBus.instance?.listenLastOne()?.let {
             disposables.add(
                 it.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe { data ->
                     val pokemonDetails = Gson().fromJson(data, PokemonDetail::class.java)
-                    Log.d("test", pokemonDetails.evolutions.toString())
+                        if(pokemonDetails.evolutions.isEmpty()) {
+                          binding.emptyStateView.visibility = View.VISIBLE
+                        }
                     binding.gridView.adapter = EvolutionsAdapter(view.context, pokemonDetails.evolutions)
                 })
         }
