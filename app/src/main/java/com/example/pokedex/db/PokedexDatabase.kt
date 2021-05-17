@@ -14,36 +14,20 @@ abstract class PokedexDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao?
     abstract fun favoriteDao(): FavoriteDao?
 
-//    companion object {
-//        private const val dbName = "pokedex_databse"
-//        private var pokedexDatabase: PokedexDatabase? = null
-//        @Synchronized
-//        fun getPokedexDatabase(context: Context?): PokedexDatabase? {
-//            if (pokedexDatabase == null) {
-//                pokedexDatabase = Room.databaseBuilder(
-//                    context!!,
-//                    PokedexDatabase::class.java, dbName
-//                )
-//                    .fallbackToDestructiveMigration()
-//                    .build()
-//            }
-//            return pokedexDatabase
-//        }
-//    }
-        companion object {
-            @Volatile
-            private var INSTANCE: PokedexDatabase? = null
-            private const val dbName = "pokedex_databse"
+    companion object {
+        @Volatile
+        private var INSTANCE: PokedexDatabase? = null
+        private const val dbName = "pokedex_database"
 
-            fun getDatabase(context: Context): PokedexDatabase {
-                return INSTANCE ?: synchronized(this) {
-                    val instance = Room.databaseBuilder(
-                        context.applicationContext,
-                        PokedexDatabase::class.java, dbName
-                    ).build()
-                    INSTANCE = instance
-                    instance
-                }
+        fun getDatabase(context: Context): PokedexDatabase {
+            return INSTANCE ?: synchronized(this) {
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    PokedexDatabase::class.java, dbName
+                ).build()
+                INSTANCE = instance
+                instance
             }
         }
+    }
 }
