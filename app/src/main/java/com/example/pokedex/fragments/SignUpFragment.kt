@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.pokedex.R
 import com.example.pokedex.databinding.FragmentSignUpBinding
 import com.example.pokedex.viewmodels.CreateUserViewModel
@@ -37,8 +38,8 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
         val email = binding.emailAddress
 
         binding.registerButton.setOnClickListener {
-//            findNavController().navigate(R.id.loginFragmentDest)
             viewModel.createUser(userId.toString(), password.toString(), email.toString())
+            findNavController().navigate(R.id.loginFragmentDest)
         }
     }
 }

@@ -31,6 +31,9 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.loginButton.setOnClickListener {
+            val email = binding.editTextTextEmailAddress.toString()
+            val password = binding.editTextTextPassword.toString()
+
             findNavController().navigate(R.id.action_loginFragmentDest_to_mainFragmentDest)
         }
 
