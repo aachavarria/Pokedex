@@ -1,12 +1,10 @@
 package com.example.pokedex.repositories
 
 import android.content.Context
-import androidx.lifecycle.LiveData
-import androidx.room.Room
 import com.example.pokedex.db.PokedexDatabase
 import com.example.pokedex.db.entities.Favorite
 import com.example.pokedex.db.entities.User
-import com.example.pokedex.models.Pokemon
+import io.reactivex.Observable
 
 class PokedexRepository(context: Context) {
 
@@ -20,7 +18,7 @@ class PokedexRepository(context: Context) {
         db.favoriteDao().registerFavorite(favorite)
     }
 
-    fun getFavorites(userId: Int) : LiveData<List<Favorite>> {
-       return db.favoriteDao().loadAllById(2)
+    fun getFavorites(userId: Int) : Observable<List<Favorite>> {
+       return db.favoriteDao().loadAllById(userId)
     }
 }

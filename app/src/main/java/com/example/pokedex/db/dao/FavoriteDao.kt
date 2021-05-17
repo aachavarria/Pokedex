@@ -1,17 +1,16 @@
 package com.example.pokedex.db.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.example.pokedex.db.entities.Favorite
-import com.example.pokedex.models.Pokemon
+import io.reactivex.Observable
 
 @Dao
 interface FavoriteDao {
     @Query("SELECT * FROM favorites WHERE userId = :userId")
-    fun loadAllById(userId: Int): LiveData<List<Favorite>>
+    fun loadAllById(userId: Int): Observable<List<Favorite>>
 
     @Insert
     fun registerFavorite(favorite: Favorite)
