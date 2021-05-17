@@ -16,7 +16,7 @@ class CreateFavoriteViewModel(application: Application) : AndroidViewModel(appli
 
    fun createFavorite(pokemon: Pokemon) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.insertFavorite(Favorite(userId = 2, pokemonId = pokemon.id))
+            repository.insertFavorite(Favorite(userId = 2, pokemonId = pokemon.id, imageUrl = pokemon.imageUrl, name = pokemon.name, types = pokemon.types.joinToString().replace(" ", "")))
         }
    }
 }
