@@ -14,8 +14,10 @@ import com.example.pokedex.adapter.ViewPagerDetailsAdapter
 import com.example.pokedex.api.APIService
 import com.example.pokedex.api.ServiceBuilder
 import com.example.pokedex.databinding.FragmentDetailsBinding
+import com.example.pokedex.models.Pokemon
 import com.example.pokedex.models.PokemonDetail
 import com.example.pokedex.rxbus.RxBus
+import com.example.pokedex.utils.Constants
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
 import com.squareup.picasso.Callback
@@ -99,7 +101,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                 chipColorID
             )
         )
-        if(pokemon.types.size > 1) {
+        if (pokemon.types.size > 1) {
             binding.pokemonType2.text = pokemon.types[1].capitalize(Locale.ROOT)
             binding.pokemonType2.visibility = View.VISIBLE
             val chip2ColorID: Int = binding.detailsLayout.resources.getIdentifier(
@@ -115,6 +117,10 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
             )
         }
 
+        binding.backButton.setOnClickListener {
+            activity?.onBackPressed();
+        }
+
 
         adapter = ViewPagerDetailsAdapter(this)
         binding.viewPager.adapter = adapter
@@ -125,7 +131,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         val paramObject = JSONObject()
         paramObject.put(
             "query",
-            "{details:pokemon_v2_pokemonspecies(where:{id:{_eq: 1}}){cycle:hatch_counter gender:gender_rate pokemon:pokemon_v2_pokemons{height weight about:pokemon_v2_pokemonspecy{description:pokemon_v2_pokemonspeciesflavortexts(where:{language_id:{_eq:9}},distinct_on:language_id){text:flavor_text}category:pokemon_v2_pokemonspeciesnames(where:{language_id:{_eq:9}}){genus}}abilities:pokemon_v2_pokemonabilities(order_by:{id: asc}){ability:pokemon_v2_ability{name}}}egg:pokemon_v2_pokemonegggroups{group:pokemon_v2_egggroup{name}}evolutions:pokemon_v2_evolutionchain{evolution:pokemon_v2_pokemonspecies(order_by:{id:asc}){id name}}}}"
+            "{details:pokemon_v2_pokemonspecies(where:{id:{_eq: ${pokemon.id}}}){cycle:hatch_counter gender:gender_rate pokemon:pokemon_v2_pokemons{height weight about:pokemon_v2_pokemonspecy{description:pokemon_v2_pokemonspeciesflavortexts(where:{language_id:{_eq:9}},distinct_on:language_id){text:flavor_text}category:pokemon_v2_pokemonspeciesnames(where:{language_id:{_eq:9}}){genus}}abilities:pokemon_v2_pokemonabilities(order_by:{id: asc}){ability:pokemon_v2_ability{name}}}egg:pokemon_v2_pokemonegggroups{group:pokemon_v2_egggroup{name}}evolutions:pokemon_v2_evolutionchain{evolution:pokemon_v2_pokemonspecies(order_by:{id:asc}where: {id: {_gt: ${pokemon.id}}}){id name}}}}"
         )
 
         disposables.add(
@@ -136,15 +142,22 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                     val pokemonDetail: PokemonDetail = PokemonDetail(
                         result.data.details[0].pokemon[0].height,
                         result.data.details[0].pokemon[0].weight,
-                        result.data.details[0].pokemon[0].about.description[0].text.replace("\n"," "),
-                        result.data.details[0].pokemon[0].about.category[0].genus,
-                        result.data.details[0].pokemon[0].abilities.map { abilities -> abilities.ability.name },
+                        result.data.details[0].pokemon[0].about.description[0].text.replace(
+                            "\n",
+                            " "
+                        ),
+                        result.data.details[0].pokemon[0].about.category[0].genus.replace("Pokémon", ""),
+                        result.data.details[0].pokemon[0].abilities.map { abilities ->
+                            abilities.ability.name.capitalize(
+                                Locale.ROOT
+                            )
+                        },
                         result.data.details[0].cycle,
                         result.data.details[0].gender,
-                        result.data.details[0].egg.map { egg -> egg.group.name },
-                        result.data.details[0].evolutions.evolution
+                        result.data.details[0].egg.map { egg -> egg.group.name.capitalize(Locale.ROOT) },
+                        result.data.details[0].evolutions.evolution.map { evolution -> Pokemon(evolution.id, evolution.name, "${Constants.IMAGE_URL}${evolution.id}.png", emptyList()) }
                     )
-                    RxBus.instance?.publish( Gson().toJson(pokemonDetail));
+                    RxBus.instance?.publish(Gson().toJson(pokemonDetail));
                 }, { throwable ->
                     throwable.printStackTrace()
                 })
