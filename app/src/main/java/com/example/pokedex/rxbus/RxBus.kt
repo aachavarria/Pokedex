@@ -1,10 +1,10 @@
 package com.example.pokedex.rxbus
 
 import io.reactivex.Observable
-import io.reactivex.subjects.PublishSubject
+import io.reactivex.subjects.BehaviorSubject
 
 class RxBus private constructor() {
-    private val publisher: PublishSubject<String> = PublishSubject.create()
+    private val publisher: BehaviorSubject<String> = BehaviorSubject.create()
     fun publish(event: String?) {
         if (event != null) {
             publisher.onNext(event)
