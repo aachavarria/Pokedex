@@ -115,6 +115,10 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
             )
         }
 
+        binding.backButton.setOnClickListener {
+            activity?.onBackPressed();
+        }
+
 
         adapter = ViewPagerDetailsAdapter(this)
         binding.viewPager.adapter = adapter
@@ -125,7 +129,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         val paramObject = JSONObject()
         paramObject.put(
             "query",
-            "{details:pokemon_v2_pokemonspecies(where:{id:{_eq: 1}}){cycle:hatch_counter gender:gender_rate pokemon:pokemon_v2_pokemons{height weight about:pokemon_v2_pokemonspecy{description:pokemon_v2_pokemonspeciesflavortexts(where:{language_id:{_eq:9}},distinct_on:language_id){text:flavor_text}category:pokemon_v2_pokemonspeciesnames(where:{language_id:{_eq:9}}){genus}}abilities:pokemon_v2_pokemonabilities(order_by:{id: asc}){ability:pokemon_v2_ability{name}}}egg:pokemon_v2_pokemonegggroups{group:pokemon_v2_egggroup{name}}evolutions:pokemon_v2_evolutionchain{evolution:pokemon_v2_pokemonspecies(order_by:{id:asc}){id name}}}}"
+            "{details:pokemon_v2_pokemonspecies(where:{id:{_eq: ${pokemon.id}}}){cycle:hatch_counter gender:gender_rate pokemon:pokemon_v2_pokemons{height weight about:pokemon_v2_pokemonspecy{description:pokemon_v2_pokemonspeciesflavortexts(where:{language_id:{_eq:9}},distinct_on:language_id){text:flavor_text}category:pokemon_v2_pokemonspeciesnames(where:{language_id:{_eq:9}}){genus}}abilities:pokemon_v2_pokemonabilities(order_by:{id: asc}){ability:pokemon_v2_ability{name}}}egg:pokemon_v2_pokemonegggroups{group:pokemon_v2_egggroup{name}}evolutions:pokemon_v2_evolutionchain{evolution:pokemon_v2_pokemonspecies(order_by:{id:asc}){id name}}}}"
         )
 
         disposables.add(

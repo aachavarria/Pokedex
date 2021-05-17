@@ -36,10 +36,55 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
                     binding.progressBar.visibility = View.GONE
                     val pokemonDetails = Gson().fromJson(data, PokemonDetail::class.java)
                     binding.description.text = pokemonDetails.description
-                    binding.ability.text = pokemonDetails.abilities[0]
-                    binding.weight.text = pokemonDetails.weight.toString()
+                    binding.ability.text = pokemonDetails.abilities[0].capitalize()
+                    binding.weight.text = "${(pokemonDetails.height / 10.0f)} kg"
                     binding.height.text = "${(pokemonDetails.height / 10.0f)} m"
-                    binding.category.text = pokemonDetails.category.toString()
+                    binding.category.text = pokemonDetails.category
+
+                    when (pokemonDetails.genderRate) {
+                        -1 -> {
+                            binding.genderTextView1.text = "None (unknown gender)"
+                        }
+                        0 -> {
+                            binding.genderTextView1.text = "100% male"
+                        }
+                        1 -> {
+                            binding.genderTextView1.text = "87.5% male,"
+                            binding.genderTextView2.text = "12.5% female"
+                            binding.genderTextView2.visibility = View.VISIBLE
+                        }
+                        2 -> {
+                            binding.genderTextView1.text = "75% male,"
+                            binding.genderTextView2.text = "25% female"
+                            binding.genderTextView2.visibility = View.VISIBLE
+                        }
+                        4 -> {
+                            binding.genderTextView1.text = "50% male,"
+                            binding.genderTextView2.text = "50% female"
+                            binding.genderTextView2.visibility = View.VISIBLE
+                        }
+                        6 -> {
+                            binding.genderTextView1.text = "25% male,"
+                            binding.genderTextView2.text = "75% female"
+                            binding.genderTextView2.visibility = View.VISIBLE
+                        }
+                        7 -> {
+                            binding.genderTextView1.text = "12.5% male,"
+                            binding.genderTextView2.text = "87.5% female"
+                            binding.genderTextView2.visibility = View.VISIBLE
+                        }
+                        8 -> {
+                            binding.genderTextView1.text = "100% female"
+                            binding.genderTextView1.setTextColor(R.color.orange_500)
+                        }
+                        else -> { // Note the block
+                            binding.genderTextView1.text = "None (unknown gender)"
+                        }
+                    }
+
+//                    binding.genderTextView.text = pokemonDetails.genderRate.toString()
+                    binding.eggCycleTextView.text = pokemonDetails.eggCycle.toString()
+                    binding.eggGroupsTextView.text = pokemonDetails.eggGroups.joinToString()
                 })
         }
     }

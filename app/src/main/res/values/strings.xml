@@ -16,4 +16,8 @@
     <string name="weight">Weight</string>
     <string name="ability">Ability</string>
     <string name="category">Category</string>
+    <string name="gender">Gender</string>
+    <string name="breeding">Breeding</string>
+    <string name="egg_groups">Egg Groups</string>
+    <string name="egg_cycle">Egg Cycle</string>
 </resources>
