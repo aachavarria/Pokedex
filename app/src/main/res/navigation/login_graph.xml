@@ -21,7 +21,11 @@
         android:id="@+id/signUpFragmentDest"
         android:name="com.example.pokedex.fragments.SignUpFragment"
         android:label="fragment_sign_up"
-        tools:layout="@layout/fragment_sign_up" />
+        tools:layout="@layout/fragment_sign_up" >
+        <action
+            android:id="@+id/action_signUpFragmentDest_to_mainFragmentDest"
+            app:destination="@id/mainFragmentDest" />
+    </fragment>
     <fragment
         android:id="@+id/mainFragmentDest"
         android:name="com.example.pokedex.fragments.MainFragment"

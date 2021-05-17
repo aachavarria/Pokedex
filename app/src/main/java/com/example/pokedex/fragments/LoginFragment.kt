@@ -1,6 +1,8 @@
 package com.example.pokedex.fragments
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,15 +32,11 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.loginButton.setOnClickListener {
-            val email = binding.editTextTextEmailAddress.toString()
-            val password = binding.editTextTextPassword.toString()
-
-            findNavController().navigate(R.id.action_loginFragmentDest_to_mainFragmentDest)
-        }
-
         binding.signUpButton.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragmentDest_to_signUpFragmentDest)
+        }
+        binding.loginButton.setOnClickListener {
+            findNavController().navigate(R.id.action_loginFragmentDest_to_mainFragmentDest)
         }
     }
 }

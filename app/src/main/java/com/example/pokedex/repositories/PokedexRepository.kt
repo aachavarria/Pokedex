@@ -15,7 +15,7 @@ class PokedexRepository(context: Context) {
         db.userDao()?.registerUser(user)
     }
 
-    fun insertFavorite(favorite: Favorite) {
+    suspend fun insertFavorite(favorite: Favorite) {
         db.favoriteDao()?.registerFavorite(favorite)
     }
 
