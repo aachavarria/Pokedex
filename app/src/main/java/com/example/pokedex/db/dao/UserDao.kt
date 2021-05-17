@@ -14,10 +14,15 @@ import com.example.pokedex.db.entities.UserFavorites
 interface UserDao {
     @Query("SELECT * FROM users")
     fun getAllUsers(): LiveData<List<User>>
+
+    @Query("SELECT * FROM users WHERE email = :email")
+    fun getUser(email: String): LiveData<List<User>>
+
     @Insert
     fun registerUser(user: User)
 
     @Transaction
     @Query("Select * FROM Users")
     fun getFavorites(): List<UserFavorites>
+
 }

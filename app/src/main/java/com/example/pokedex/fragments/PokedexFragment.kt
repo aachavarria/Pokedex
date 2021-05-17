@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.paging.LoadState
@@ -13,6 +14,7 @@ import com.example.pokedex.R
 import com.example.pokedex.adapter.PokemonCardAdapter
 import com.example.pokedex.databinding.FragmentPokedexBinding
 import com.example.pokedex.utils.Utils.hideKeyboard
+import com.example.pokedex.viewmodels.CreateFavoriteViewModel
 import com.example.pokedex.viewmodels.PokemonListViewModel
 import com.example.pokedex.viewmodels.PokemonListViewModelType
 import com.jakewharton.rxbinding2.widget.RxTextView
@@ -29,6 +31,7 @@ class PokedexFragment : Fragment(R.layout.fragment_pokedex) {
     private val disposables = CompositeDisposable()
 
     private lateinit var viewModel: PokemonListViewModelType
+    private val favoriteViewModel: CreateFavoriteViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -116,7 +119,7 @@ class PokedexFragment : Fragment(R.layout.fragment_pokedex) {
             adapter.favoriteClicked
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                        // Guardar it
+                  favoriteViewModel.createFavorite(it)
                 }
         )
     }

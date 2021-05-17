@@ -9,12 +9,14 @@ import androidx.room.*
             parentColumns = ["id"],
             childColumns = ["userId"]
         )
-    ])
+    ]
+)
 data class Favorite(
-    @PrimaryKey(autoGenerate = true) val id: Int,
     @ColumnInfo(name = "userId") val userId: Int,
     @ColumnInfo(name = "pokemonId") val pokemonId: Int,
-)
+) {
+    @PrimaryKey(autoGenerate = true) var id: Int = 0
+}
 data class UserFavorites(
     @Embedded var user: User,
     @Relation(
