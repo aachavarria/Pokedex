@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.jakewharton.rxbinding2.view.RxView
@@ -16,6 +17,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import com.example.pokedex.databinding.FragmentLoginBinding
+import com.example.pokedex.viewmodels.ItemViewModel
 import com.example.pokedex.viewmodels.LoginViewModel
 import com.example.pokedex.viewmodels.LoginViewModelType
 
@@ -25,6 +27,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private val disposables = CompositeDisposable()
     lateinit var viewModel: LoginViewModelType
+    private val CurrentUserViewModel: ItemViewModel by viewModels()
+    private val userLoginModel: LoginViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,13 +98,21 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
                         }
         )
+//        disposables.add(
+//                userLoginModel.getUser()
+//        )
         disposables.add(
                 viewModel.outputs.userFetched
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.io())
                         .subscribe {
                             Log.d("current", "$it ")
-//                            if (!it) {
+//                            userLoginModel.getUser(it).subscribe{
+//                                Log.d("current", "$it ")
+////                                CurrentUserViewModel.selectItem(it)
+//                            }
+//                            CurrentUserViewModel.selectItem(it)
+//                            if (it) {
 //                                binding.emailAdress.setText("")
 //                                binding.password.setText("")
 //                            } else {

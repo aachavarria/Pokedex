@@ -12,7 +12,7 @@ import com.example.pokedex.db.entities.User
 
 @Database(entities = [User::class, Favorite::class], version = 1, exportSchema = false)
 abstract class PokedexDatabase : RoomDatabase() {
-    abstract fun userDao(): UserDao?
+    abstract fun userDao(): UserDao
     abstract fun favoriteDao(): FavoriteDao
 
     companion object {

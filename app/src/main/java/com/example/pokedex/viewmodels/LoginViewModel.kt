@@ -1,11 +1,13 @@
 package com.example.pokedex.viewmodels
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.pokedex.db.entities.Favorite
 import com.example.pokedex.db.entities.User
 import com.example.pokedex.repositories.PokedexRepository
 import io.reactivex.Observable
@@ -27,7 +29,7 @@ interface LoginViewModelOutputs {
     val isLoginButtonEnabled: Observable<Boolean>
     val passwordError: Observable<Boolean>
     val emailError: Observable<Boolean>
-    val userFetched: Observable<Boolean>
+    val userFetched: Observable<User>
 }
 
 interface LoginViewModelType {
@@ -54,7 +56,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application), 
     override var passwordError: Observable<Boolean> = Observable.empty()
     override var emailError: Observable<Boolean> = Observable.empty()
     override val isLoginButtonEnabled: Observable<Boolean>
-    override val userFetched: Observable<Boolean>
+    override val userFetched: Observable<User>
 
     init {
         isLoginButtonEnabled = Observable.combineLatest(password, email) { p, e ->
@@ -69,22 +71,14 @@ class LoginViewModel(application: Application) : AndroidViewModel(application), 
                 .map { it.isEmpty() }
         userFetched = loginClicked
                 .withLatestFrom(email, password, email, {e, q, t, s -> User(trainerId = q , password = t, email = s)})
-                .doOnNext{ getUser(it) }
-                .map { true }
+                .switchMap{getUser(it.email, it.password)}
+//                .onErrorReturn { User(email = "", password = "", trainerId = "")}
+//                .doOnNext{ getUser(it) }
+//                .map { it -> getUser(it.email, it.password) }
     }
 
-    private fun getUser(user: User) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val currentUser = repository.getUser(user.email.toString(), user.password.toString())
-            Log.d("user", "getUser: $currentUser")
-            if (currentUser == null){
-//                Toast.makeText(, "", Toast.LENGTH_SHORT).show()
-            } else {
-                mutableSelectedItem.value = currentUser
-            }
-        }
+
+    fun getUser(email: String, password: String): Observable<User> {
+       return repository.getUser(email.toString(), password.toString())
     }
-//    private fun selectItem(item: User?) {
-//        mutableSelectedItem.value = item
-//    }
 }

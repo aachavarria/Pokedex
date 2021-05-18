@@ -72,16 +72,9 @@ class CreateUserViewModel(application: Application) : AndroidViewModel(applicati
             .doOnNext{ createUser(it) }
             .map { true }
     }
-//    override val isButtonEnabled: Observable<Boolean> =
-//        Observable.combineLatest(trainerId, password, email) { u, p, e ->
-//            u.isNotEmpty() && p.isNotEmpty() && android.util.Patterns.EMAIL_ADDRESS.matcher(
-//                e
-//            ).matches()
-//        }
-
-       fun createUser(user: User) {
-           viewModelScope.launch(Dispatchers.IO) {
-               repository.insertUser(user)
-           }
+   fun createUser(user: User) {
+       viewModelScope.launch(Dispatchers.IO) {
+           repository.insertUser(user)
        }
+   }
 }

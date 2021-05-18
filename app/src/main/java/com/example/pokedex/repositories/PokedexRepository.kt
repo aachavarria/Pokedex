@@ -1,6 +1,7 @@
 package com.example.pokedex.repositories
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.pokedex.db.PokedexDatabase
 import com.example.pokedex.db.entities.Favorite
@@ -12,11 +13,11 @@ class PokedexRepository(context: Context) {
     private var db: PokedexDatabase = PokedexDatabase.getDatabase(context)
 
     suspend fun insertUser(user: User) {
-        db.userDao()?.registerUser(user)
+        db.userDao().registerUser(user)
     }
 
-    suspend fun getUser(email: String, password: String) : User? {
-        return db.userDao()?.getUser(email, password)
+    fun getUser(email: String, password: String) : Observable<User> {
+        return db.userDao().getUser(email, password)
     }
 
     fun insertFavorite(favorite: Favorite) {
