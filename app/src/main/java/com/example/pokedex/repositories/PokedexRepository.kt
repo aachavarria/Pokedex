@@ -2,11 +2,9 @@ package com.example.pokedex.repositories
 
 import android.content.Context
 import androidx.lifecycle.LiveData
-import androidx.room.Room
 import com.example.pokedex.db.PokedexDatabase
 import com.example.pokedex.db.entities.Favorite
 import com.example.pokedex.db.entities.User
-import com.example.pokedex.models.Pokemon
 
 class PokedexRepository(context: Context) {
 
@@ -16,6 +14,10 @@ class PokedexRepository(context: Context) {
         db.userDao()?.registerUser(user)
     }
 
+    suspend fun getUser(email: String, password: String) : User? {
+        return db.userDao()?.getUser(email, password)
+    }
+
     fun insertFavorite(favorite: Favorite) {
         db.favoriteDao().registerFavorite(favorite)
     }
@@ -23,4 +25,5 @@ class PokedexRepository(context: Context) {
     fun getFavorites(userId: Int) : LiveData<List<Favorite>> {
        return db.favoriteDao().loadAllById(2)
     }
+
 }
