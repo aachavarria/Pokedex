@@ -22,7 +22,6 @@ class PokemonCardAdapter : PagingDataAdapter<Pokemon, PokemonCardAdapter.MyViewH
     class MyViewHolder(val binding: PokemonCardBinding) : RecyclerView.ViewHolder(binding.root)
 
     private val clicksAcceptor = PublishSubject.create<Pokemon>()
-
     private val favoriteAcceptor = PublishSubject.create<Pokemon>()
 
     val itemClicked: Observable<Pokemon> = clicksAcceptor.hide()

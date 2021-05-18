@@ -11,10 +11,18 @@ import com.example.pokedex.databinding.PokemonCardBinding
 import com.example.pokedex.models.Pokemon
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 
 class ViewFavoriteAdapter: RecyclerView.Adapter<ViewFavoriteAdapter.MyViewHolder>() {
 
     class MyViewHolder(val binding: PokemonCardBinding) : RecyclerView.ViewHolder(binding.root)
+
+    private val clicksAcceptor = PublishSubject.create<Pokemon>()
+    private val favoriteAcceptor = PublishSubject.create<Pokemon>()
+
+    val itemClicked: Observable<Pokemon> = clicksAcceptor.hide()
+    val favoriteClicked: Observable<Pokemon> = favoriteAcceptor.hide()
 
     var favorites: List<Pokemon> = emptyList()
         set(value) {
@@ -37,6 +45,12 @@ class ViewFavoriteAdapter: RecyclerView.Adapter<ViewFavoriteAdapter.MyViewHolder
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val pokemon = favorites[position]
+
+        holder.binding.favoriteIcon.setOnCheckedChangeListener { checkBox, isChecked ->
+            if (pokemon != null) {
+                favoriteAcceptor.onNext(pokemon)
+            }
+        }
 
         Picasso.get().load(pokemon?.imageUrl).fit().noFade().centerInside()
             .into(holder.binding.imageView, object :

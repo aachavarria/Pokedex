@@ -37,6 +37,14 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
                     adapter.favorites = it.map { favorite -> Pokemon(favorite.pokemonId, favorite.name, favorite.imageUrl, favorite.types.split(",")) }
                 }
         )
+
+        disposables.add(
+            adapter.favoriteClicked
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+//                    favoriteViewModel
+                }
+        )
     }
 
     override fun onCreateView(
