@@ -68,7 +68,7 @@ class CreateUserViewModel(application: Application) : AndroidViewModel(applicati
         emailError = email
             .map { it.isEmpty() }
         userCreated = registerClicked
-            .withLatestFrom(trainerId, password, email, {e, n, s, q -> User(trainerId = n, password = q, email = s)})
+            .withLatestFrom(trainerId, password, email, {e, n, s, q -> User(trainerId = n, password = s, email = q)})
             .doOnNext{ createUser(it) }
             .map { true }
     }
