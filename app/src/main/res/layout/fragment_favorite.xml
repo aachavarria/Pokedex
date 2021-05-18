@@ -7,6 +7,17 @@
     android:layout_height="match_parent"
     tools:context=".fragments.FavoriteFragment">
 
+    <com.example.pokedex.widgets.EmptyInfoView
+        android:id="@+id/emptyState"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:subtitle="Try to add a pokemon to your favorites"
+        app:title="No favorites pokemon" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/pokemonCardRecyclerView"
         android:layout_width="0dp"
@@ -23,17 +34,5 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:itemCount="5"
         tools:listitem="@layout/pokemon_card" />
-
-    <com.example.pokedex.widgets.EmptyInfoView
-        android:id="@+id/emptyState"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:subtitle="Try to add a pokemon to your favorites"
-        app:title="No favorites pokemon" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

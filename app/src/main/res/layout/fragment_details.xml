@@ -105,10 +105,12 @@
         android:id="@+id/materialCardView"
         style="@style/CardBackdropStyle"
         android:layout_width="0dp"
-        android:layout_height="480dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pokemonType1">
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabID"

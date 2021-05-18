@@ -14,7 +14,7 @@ import com.example.pokedex.R
 import com.example.pokedex.adapter.PokemonCardAdapter
 import com.example.pokedex.databinding.FragmentPokedexBinding
 import com.example.pokedex.utils.Utils.hideKeyboard
-import com.example.pokedex.viewmodels.CreateFavoriteViewModel
+import com.example.pokedex.viewmodels.FavoriteListViewModel
 import com.example.pokedex.viewmodels.PokemonListViewModel
 import com.example.pokedex.viewmodels.PokemonListViewModelType
 import com.jakewharton.rxbinding2.widget.RxTextView
@@ -31,7 +31,7 @@ class PokedexFragment : Fragment(R.layout.fragment_pokedex) {
     private val disposables = CompositeDisposable()
 
     private lateinit var viewModel: PokemonListViewModelType
-    private val favoriteViewModel: CreateFavoriteViewModel by viewModels()
+    private val favoriteViewModel: FavoriteListViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,8 +50,8 @@ class PokedexFragment : Fragment(R.layout.fragment_pokedex) {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        disposables.clear()
         _binding = null
+        disposables.clear()
     }
 
 
@@ -74,6 +74,12 @@ class PokedexFragment : Fragment(R.layout.fragment_pokedex) {
                 binding.pokemonCardRecyclerView.isVisible = true
             }
         }
+
+        disposables.add(
+            favoriteViewModel.favoriteList(1).subscribe{
+                adapter.favoritesList.onNext(it)
+            }
+        )
 
         disposables.add(
             viewModel.outputs.listData
@@ -119,7 +125,11 @@ class PokedexFragment : Fragment(R.layout.fragment_pokedex) {
             adapter.favoriteClicked
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                  favoriteViewModel.createFavorite(it)
+                    if(it.isChecked == true) {
+                        favoriteViewModel.createFavorite(it)
+                    } else {
+                        favoriteViewModel.removeFavorite(it.id)
+                    }
                 }
         )
     }

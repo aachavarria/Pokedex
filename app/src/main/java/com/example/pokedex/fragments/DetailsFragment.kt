@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.pokedex.R
 import com.example.pokedex.adapter.ViewPagerDetailsAdapter
@@ -18,6 +20,7 @@ import com.example.pokedex.models.Pokemon
 import com.example.pokedex.models.PokemonDetail
 import com.example.pokedex.rxbus.RxBus
 import com.example.pokedex.utils.Constants
+import com.example.pokedex.viewmodels.FavoriteListViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
 import com.squareup.picasso.Callback
@@ -36,6 +39,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
     private val binding: FragmentDetailsBinding get() = _binding!!
     private val disposables = CompositeDisposable()
     private var service: APIService = ServiceBuilder.buildService(APIService::class.java)
+    private val favoriteViewModel: FavoriteListViewModel by viewModels()
 
     val args: DetailsFragmentArgs by navArgs()
 
@@ -121,7 +125,6 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
             activity?.onBackPressed();
         }
 
-
         adapter = ViewPagerDetailsAdapter(this)
         binding.viewPager.adapter = adapter
         TabLayoutMediator(binding.tabID, binding.viewPager) { tab, position ->
@@ -162,7 +165,21 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                     throwable.printStackTrace()
                 })
         )
-
-
+        disposables.add(
+            favoriteViewModel.isFavorite(pokemon.id , 1).subscribe{
+                binding.favoriteCheckbox.isChecked = it
+            }
+        )
+        binding.favoriteCheckbox.setOnCheckedChangeListener { buttonView, isChecked ->
+            when {
+                buttonView.isPressed -> {
+                    if (isChecked) {
+                        favoriteViewModel.createFavorite(pokemon)
+                    } else {
+                        favoriteViewModel.removeFavorite(pokemon.id)
+                    }
+                }
+            }
+        }
     }
 }

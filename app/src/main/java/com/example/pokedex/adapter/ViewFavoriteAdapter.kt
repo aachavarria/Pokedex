@@ -6,26 +6,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.pokedex.databinding.FragmentFavoriteBinding
 import com.example.pokedex.databinding.PokemonCardBinding
-import com.example.pokedex.db.entities.Favorite
-import com.example.pokedex.db.entities.UserFavorites
-import com.example.pokedex.fragments.AboutFragment
-import com.example.pokedex.fragments.DetailsFragment
-import com.example.pokedex.fragments.EvolutionFragment
-import com.example.pokedex.fragments.FavoriteFragment
 import com.example.pokedex.models.Pokemon
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 
 class ViewFavoriteAdapter: RecyclerView.Adapter<ViewFavoriteAdapter.MyViewHolder>() {
 
     class MyViewHolder(val binding: PokemonCardBinding) : RecyclerView.ViewHolder(binding.root)
 
-    //TODO Paso 5, creamos el set para la lista que va a alimentar el adapter (datasource)
+    private val favoriteAcceptor = PublishSubject.create<Pokemon>()
+    val favoriteClicked: Observable<Pokemon> = favoriteAcceptor.hide()
+
     var favorites: List<Pokemon> = emptyList()
         set(value) {
             field = value
@@ -47,6 +42,12 @@ class ViewFavoriteAdapter: RecyclerView.Adapter<ViewFavoriteAdapter.MyViewHolder
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val pokemon = favorites[position]
+
+        holder.binding.favoriteIcon.setOnCheckedChangeListener { checkBox, isChecked ->
+            if (pokemon != null && !isChecked) {
+                favoriteAcceptor.onNext(pokemon)
+            }
+        }
 
         Picasso.get().load(pokemon?.imageUrl).fit().noFade().centerInside()
             .into(holder.binding.imageView, object :

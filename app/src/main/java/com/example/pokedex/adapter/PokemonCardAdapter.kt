@@ -1,6 +1,9 @@
 package com.example.pokedex.adapter
+
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,10 +12,12 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pokedex.databinding.PokemonCardBinding
+import com.example.pokedex.db.entities.Favorite
 import com.example.pokedex.models.Pokemon
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import io.reactivex.Observable
+import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 
 
@@ -22,8 +27,10 @@ class PokemonCardAdapter : PagingDataAdapter<Pokemon, PokemonCardAdapter.MyViewH
     class MyViewHolder(val binding: PokemonCardBinding) : RecyclerView.ViewHolder(binding.root)
 
     private val clicksAcceptor = PublishSubject.create<Pokemon>()
-
     private val favoriteAcceptor = PublishSubject.create<Pokemon>()
+
+    val favoritesList = BehaviorSubject.create<List<Favorite>>()
+
 
     val itemClicked: Observable<Pokemon> = clicksAcceptor.hide()
     val favoriteClicked: Observable<Pokemon> = favoriteAcceptor.hide()
@@ -38,6 +45,7 @@ class PokemonCardAdapter : PagingDataAdapter<Pokemon, PokemonCardAdapter.MyViewH
         )
     }
 
+    @SuppressLint("CheckResult")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val pokemon = getItem(position)
         holder.itemView.setOnClickListener {
@@ -45,21 +53,40 @@ class PokemonCardAdapter : PagingDataAdapter<Pokemon, PokemonCardAdapter.MyViewH
                 clicksAcceptor.onNext(pokemon)
             }
         }
+
         holder.binding.favoriteIcon.setOnCheckedChangeListener { checkBox, isChecked ->
-            if (pokemon != null) {
-                favoriteAcceptor.onNext(pokemon)
+            when {
+                checkBox.isPressed -> {
+                    pokemon?.let {
+                        favoriteAcceptor.onNext(Pokemon(it.id,it.name, it.imageUrl, it.types, isChecked))
+                    }
+                }
             }
+
         }
 
-        Picasso.get().load(pokemon?.imageUrl).fit().noFade().centerInside().into(holder.binding.imageView, object: Callback {
-            override fun onSuccess() {
-                holder.binding.imageView.alpha = 0f
-                holder.binding.imageView.animate().setDuration(200).alpha(1f).start()
+        favoritesList.subscribe { list ->
+            pokemon?.id?.let {
+                val isFavorite = list.find { favorite -> favorite.pokemonId == pokemon.id }
+                if (isFavorite != null) {
+                    Log.d("Test", isFavorite.toString())
+                    holder.binding.favoriteIcon.isChecked = true
+                }
             }
 
-            override fun onError(e: Exception?) {
-            }
-        })
+        }
+
+
+        Picasso.get().load(pokemon?.imageUrl).fit().noFade().centerInside()
+            .into(holder.binding.imageView, object : Callback {
+                override fun onSuccess() {
+                    holder.binding.imageView.alpha = 0f
+                    holder.binding.imageView.animate().setDuration(200).alpha(1f).start()
+                }
+
+                override fun onError(e: Exception?) {
+                }
+            })
         if (pokemon != null) {
             holder.binding.textView.text = pokemon.name.capitalize()
             val pokemonNumberText = when (pokemon.id) {
@@ -72,16 +99,34 @@ class PokemonCardAdapter : PagingDataAdapter<Pokemon, PokemonCardAdapter.MyViewH
 
             holder.binding.textView2.text = pokemonNumberText
             holder.binding.type1.text = pokemon.types[0].capitalize()
-            val context: Context =  holder.binding.card.context
-            val cardColorID: Int = holder.binding.card.resources.getIdentifier("card_${pokemon.types[0]}", "color", context.packageName)
-            val chipColorID: Int = holder.binding.card.resources.getIdentifier("chip_${pokemon.types[0]}", "color", context.packageName)
-            holder.binding.card.setCardBackgroundColor( holder.binding.card.context.getColor(cardColorID))
-            holder.binding.type1.chipBackgroundColor = ColorStateList.valueOf(ContextCompat.getColor(context, chipColorID))
-            if(pokemon.types.size > 1) {
+            val context: Context = holder.binding.card.context
+            val cardColorID: Int = holder.binding.card.resources.getIdentifier(
+                "card_${pokemon.types[0]}",
+                "color",
+                context.packageName
+            )
+            val chipColorID: Int = holder.binding.card.resources.getIdentifier(
+                "chip_${pokemon.types[0]}",
+                "color",
+                context.packageName
+            )
+            holder.binding.card.setCardBackgroundColor(
+                holder.binding.card.context.getColor(
+                    cardColorID
+                )
+            )
+            holder.binding.type1.chipBackgroundColor =
+                ColorStateList.valueOf(ContextCompat.getColor(context, chipColorID))
+            if (pokemon.types.size > 1) {
                 holder.binding.type2.text = pokemon.types[1].capitalize()
                 holder.binding.type2.visibility = View.VISIBLE
-                val chip2ColorID: Int = holder.binding.card.resources.getIdentifier("chip_${pokemon.types[1]}", "color", context.packageName)
-                holder.binding.type2.chipBackgroundColor = ColorStateList.valueOf(ContextCompat.getColor(context, chip2ColorID))
+                val chip2ColorID: Int = holder.binding.card.resources.getIdentifier(
+                    "chip_${pokemon.types[1]}",
+                    "color",
+                    context.packageName
+                )
+                holder.binding.type2.chipBackgroundColor =
+                    ColorStateList.valueOf(ContextCompat.getColor(context, chip2ColorID))
             } else {
                 holder.binding.type2.visibility = View.GONE
             }
