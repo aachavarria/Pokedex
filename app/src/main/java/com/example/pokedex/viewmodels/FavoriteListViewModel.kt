@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pokedex.db.entities.Favorite
+import com.example.pokedex.models.Pokemon
 import com.example.pokedex.repositories.PokedexRepository
 import io.reactivex.Observable
 import kotlinx.coroutines.Dispatchers
@@ -21,5 +22,16 @@ class FavoriteListViewModel(application: Application) : AndroidViewModel(applica
             repository.removeFavorite(pokemonId)
         }
     }
+
+    fun createFavorite(pokemon: Pokemon) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.insertFavorite(Favorite(userId = 1, pokemonId = pokemon.id, imageUrl = pokemon.imageUrl, name = pokemon.name, types = pokemon.types.joinToString().replace(" ", "")))
+        }
+    }
+
+    fun isFavorite(pokemonId: Int, userId: Int): Observable<Boolean> {
+        return repository.isFavorite(pokemonId, userId)
+    }
+
 
 }

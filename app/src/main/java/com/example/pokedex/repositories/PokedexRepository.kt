@@ -26,6 +26,6 @@ class PokedexRepository(context: Context) {
     }
 
     fun isFavorite(pokemonId: Int, userId: Int): Observable<Boolean>{
-        return db.favoriteDao().isFavorite(pokemonId, userId).map { it.isEmpty() }
+        return db.favoriteDao().isFavorite(pokemonId, userId).map { it.isNotEmpty() }
     }
 }
