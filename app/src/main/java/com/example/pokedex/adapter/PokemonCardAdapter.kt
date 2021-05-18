@@ -1,9 +1,7 @@
 package com.example.pokedex.adapter
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +15,6 @@ import com.example.pokedex.models.Pokemon
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import io.reactivex.Observable
-import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 
 
@@ -29,7 +26,11 @@ class PokemonCardAdapter : PagingDataAdapter<Pokemon, PokemonCardAdapter.MyViewH
     private val clicksAcceptor = PublishSubject.create<Pokemon>()
     private val favoriteAcceptor = PublishSubject.create<Pokemon>()
 
-    val favoritesList = BehaviorSubject.create<List<Favorite>>()
+    var favoritesList: List<Favorite> = emptyList()
+        set(value) {
+            field = value
+//            notifyDataSetChanged()
+        }
 
 
     val itemClicked: Observable<Pokemon> = clicksAcceptor.hide()
@@ -45,7 +46,6 @@ class PokemonCardAdapter : PagingDataAdapter<Pokemon, PokemonCardAdapter.MyViewH
         )
     }
 
-    @SuppressLint("CheckResult")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val pokemon = getItem(position)
         holder.itemView.setOnClickListener {
@@ -65,18 +65,6 @@ class PokemonCardAdapter : PagingDataAdapter<Pokemon, PokemonCardAdapter.MyViewH
 
         }
 
-        favoritesList.subscribe { list ->
-            pokemon?.id?.let {
-                val isFavorite = list.find { favorite -> favorite.pokemonId == pokemon.id }
-                if (isFavorite != null) {
-                    Log.d("Test", isFavorite.toString())
-                    holder.binding.favoriteIcon.isChecked = true
-                }
-            }
-
-        }
-
-
         Picasso.get().load(pokemon?.imageUrl).fit().noFade().centerInside()
             .into(holder.binding.imageView, object : Callback {
                 override fun onSuccess() {
@@ -87,7 +75,12 @@ class PokemonCardAdapter : PagingDataAdapter<Pokemon, PokemonCardAdapter.MyViewH
                 override fun onError(e: Exception?) {
                 }
             })
+
         if (pokemon != null) {
+
+            val isFavorite = favoritesList.find { favorite -> favorite.pokemonId == pokemon.id }
+            holder.binding.favoriteIcon.isChecked = isFavorite != null
+
             holder.binding.textView.text = pokemon.name.capitalize()
             val pokemonNumberText = when (pokemon.id) {
                 in 1..9 -> "#00" + pokemon.id.toString()
