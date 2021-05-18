@@ -125,7 +125,11 @@ class PokedexFragment : Fragment(R.layout.fragment_pokedex) {
             adapter.favoriteClicked
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                  favoriteViewModel.createFavorite(it)
+                    if(it.isChecked == true) {
+                        favoriteViewModel.createFavorite(it)
+                    } else {
+                        favoriteViewModel.removeFavorite(it.id)
+                    }
                 }
         )
     }

@@ -58,7 +58,7 @@ class PokemonCardAdapter : PagingDataAdapter<Pokemon, PokemonCardAdapter.MyViewH
             when {
                 checkBox.isPressed -> {
                     pokemon?.let {
-                        favoriteAcceptor.onNext(pokemon)
+                        favoriteAcceptor.onNext(Pokemon(it.id,it.name, it.imageUrl, it.types, isChecked))
                     }
                 }
             }
