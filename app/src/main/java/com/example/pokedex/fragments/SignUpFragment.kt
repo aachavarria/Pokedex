@@ -115,7 +115,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe{
-                    findNavController().navigate(R.id.action_signUpFragmentDest_to_mainFragmentDest)
+                    findNavController().navigate(R.id.action_signUpFragmentDest_to_loginFragmentDest)
 //                    binding.emailAdress.setText("")
 //                    binding.password.setText("")
 //                    binding.trainerId.setText("")
