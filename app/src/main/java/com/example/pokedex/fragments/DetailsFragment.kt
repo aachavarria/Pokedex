@@ -12,7 +12,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.pokedex.R
-import com.example.pokedex.adapter.PokemonCardAdapter
 import com.example.pokedex.adapter.ViewPagerDetailsAdapter
 import com.example.pokedex.api.APIService
 import com.example.pokedex.api.ServiceBuilder

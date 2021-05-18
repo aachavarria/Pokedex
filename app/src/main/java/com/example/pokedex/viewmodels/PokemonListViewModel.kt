@@ -1,6 +1,7 @@
 package com.example.pokedex.viewmodels
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -29,7 +30,8 @@ interface PokemonListViewModelType {
 }
 
 class PokemonListViewModel(
-) : ViewModel(), PokemonListViewModelInputs, PokemonListViewModelOutputs, PokemonListViewModelType {
+    application: Application
+) : AndroidViewModel(application), PokemonListViewModelInputs, PokemonListViewModelOutputs, PokemonListViewModelType {
 
     private var service: APIService = ServiceBuilder.buildService(APIService::class.java)
 

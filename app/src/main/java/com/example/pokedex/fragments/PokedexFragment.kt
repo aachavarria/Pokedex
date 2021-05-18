@@ -50,8 +50,8 @@ class PokedexFragment : Fragment(R.layout.fragment_pokedex) {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        disposables.clear()
         _binding = null
+        disposables.clear()
     }
 
 
@@ -74,6 +74,12 @@ class PokedexFragment : Fragment(R.layout.fragment_pokedex) {
                 binding.pokemonCardRecyclerView.isVisible = true
             }
         }
+
+        disposables.add(
+            favoriteViewModel.favoriteList(1).subscribe{
+                adapter.favoritesList.onNext(it)
+            }
+        )
 
         disposables.add(
             viewModel.outputs.listData

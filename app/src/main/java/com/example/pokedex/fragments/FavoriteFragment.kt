@@ -30,8 +30,12 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    if(it.isNotEmpty()) {
+                    if(it.isEmpty()) {
+                        binding.emptyState.visibility = View.VISIBLE
+                        binding.pokemonCardRecyclerView.visibility = View.GONE
+                    } else {
                         binding.emptyState.visibility = View.GONE
+                        binding.pokemonCardRecyclerView.visibility = View.VISIBLE
                     }
                     adapter.favorites = it.map { favorite -> Pokemon(favorite.pokemonId, favorite.name, favorite.imageUrl, favorite.types.split(",")) }
                 }

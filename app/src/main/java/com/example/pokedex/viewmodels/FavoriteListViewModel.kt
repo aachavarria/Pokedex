@@ -33,5 +33,4 @@ class FavoriteListViewModel(application: Application) : AndroidViewModel(applica
         return repository.isFavorite(pokemonId, userId)
     }
 
-
 }
