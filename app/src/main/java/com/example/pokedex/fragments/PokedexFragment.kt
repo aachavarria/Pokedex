@@ -77,7 +77,7 @@ class PokedexFragment : Fragment(R.layout.fragment_pokedex) {
 
         disposables.add(
             favoriteViewModel.favoriteList(1).subscribe{
-                adapter.favoritesList.onNext(it)
+                adapter.favoritesList = it
             }
         )
 
