@@ -7,12 +7,10 @@ import com.example.pokedex.db.entities.User
 import com.example.pokedex.repositories.PokedexRepository
 import io.reactivex.Observable
 import io.reactivex.Observer
-import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.*
 
 //M V VM
 interface CreateUserViewModelInputs {
@@ -36,8 +34,10 @@ interface CreateUserViewModelType {
     val outputs: CreateUserViewModelOutputs
 }
 
-class CreateUserViewModel(application: Application) : AndroidViewModel(application), CreateUserViewModelInputs, CreateUserViewModelOutputs, CreateUserViewModelType {
+class CreateUserViewModel(application: Application) : AndroidViewModel(application),
+    CreateUserViewModelInputs, CreateUserViewModelOutputs, CreateUserViewModelType {
     private val repository = PokedexRepository(application.applicationContext)
+
     //type
     override val inputs: CreateUserViewModelInputs = this
     override val outputs: CreateUserViewModelOutputs = this
@@ -68,13 +68,18 @@ class CreateUserViewModel(application: Application) : AndroidViewModel(applicati
         emailError = email
             .map { it.isEmpty() }
         userCreated = registerClicked
-            .withLatestFrom(trainerId, password, email, {e, n, s, q -> User(trainerId = n, password = s, email = q)})
-            .doOnNext{ createUser(it) }
+            .withLatestFrom(
+                trainerId,
+                password,
+                email,
+                { e, n, s, q -> User(trainerId = n, password = s, email = q) })
+            .doOnNext { createUser(it) }
             .map { true }
     }
-   fun createUser(user: User) {
-       viewModelScope.launch(Dispatchers.IO) {
-           repository.insertUser(user)
-       }
-   }
+
+    fun createUser(user: User) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.insertUser(user)
+        }
+    }
 }

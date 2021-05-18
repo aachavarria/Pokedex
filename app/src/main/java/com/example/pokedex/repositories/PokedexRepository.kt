@@ -1,8 +1,6 @@
 package com.example.pokedex.repositories
 
 import android.content.Context
-import android.util.Log
-import androidx.lifecycle.LiveData
 import com.example.pokedex.db.PokedexDatabase
 import com.example.pokedex.db.entities.Favorite
 import com.example.pokedex.db.entities.User
@@ -16,7 +14,7 @@ class PokedexRepository(context: Context) {
         db.userDao().registerUser(user)
     }
 
-    fun getUser(email: String, password: String) : Observable<User> {
+    fun getUser(email: String, password: String): Observable<List<User>> {
         return db.userDao().getUser(email, password)
     }
 
@@ -24,14 +22,15 @@ class PokedexRepository(context: Context) {
         db.favoriteDao().registerFavorite(favorite)
     }
 
-    fun getFavorites(userId: Int) : Observable<List<Favorite>> {
-       return db.favoriteDao().loadAllById(userId)
+    fun getFavorites(userId: Int): Observable<List<Favorite>> {
+        return db.favoriteDao().loadAllById(userId)
     }
-    suspend fun removeFavorite(pokemonId: Int) {
+
+    fun removeFavorite(pokemonId: Int) {
         return db.favoriteDao().removeFavorite(pokemonId)
     }
 
-    fun isFavorite(pokemonId: Int, userId: Int): Observable<Boolean>{
+    fun isFavorite(pokemonId: Int, userId: Int): Observable<Boolean> {
         return db.favoriteDao().isFavorite(pokemonId, userId).map { it.isNotEmpty() }
     }
 }
