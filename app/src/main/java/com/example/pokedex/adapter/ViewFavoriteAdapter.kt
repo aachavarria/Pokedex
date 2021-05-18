@@ -18,10 +18,7 @@ class ViewFavoriteAdapter: RecyclerView.Adapter<ViewFavoriteAdapter.MyViewHolder
 
     class MyViewHolder(val binding: PokemonCardBinding) : RecyclerView.ViewHolder(binding.root)
 
-    private val clicksAcceptor = PublishSubject.create<Pokemon>()
     private val favoriteAcceptor = PublishSubject.create<Pokemon>()
-
-    val itemClicked: Observable<Pokemon> = clicksAcceptor.hide()
     val favoriteClicked: Observable<Pokemon> = favoriteAcceptor.hide()
 
     var favorites: List<Pokemon> = emptyList()
@@ -47,7 +44,7 @@ class ViewFavoriteAdapter: RecyclerView.Adapter<ViewFavoriteAdapter.MyViewHolder
         val pokemon = favorites[position]
 
         holder.binding.favoriteIcon.setOnCheckedChangeListener { checkBox, isChecked ->
-            if (pokemon != null) {
+            if (pokemon != null && !isChecked) {
                 favoriteAcceptor.onNext(pokemon)
             }
         }

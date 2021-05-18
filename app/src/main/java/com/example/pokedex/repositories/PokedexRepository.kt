@@ -21,4 +21,7 @@ class PokedexRepository(context: Context) {
     fun getFavorites(userId: Int) : Observable<List<Favorite>> {
        return db.favoriteDao().loadAllById(userId)
     }
+    suspend fun removeFavorite(pokemonId: Int) {
+        return db.favoriteDao().removeFavorite(pokemonId)
+    }
 }

@@ -1,7 +1,6 @@
 package com.example.pokedex.db.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.example.pokedex.db.entities.Favorite
@@ -15,6 +14,6 @@ interface FavoriteDao {
     @Insert
     fun registerFavorite(favorite: Favorite)
 
-    @Delete
-    fun delete(favorite: Favorite)
+    @Query("DELETE FROM favorites WHERE pokemonId = :pokemonId")
+    fun removeFavorite(pokemonId: Int)
 }

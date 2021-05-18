@@ -25,7 +25,6 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.pokemonCardRecyclerView.adapter = adapter
-
         disposables.add(
             favoriteViewModel.favoriteList(1)
                 .subscribeOn(Schedulers.io())
@@ -42,7 +41,7 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
             adapter.favoriteClicked
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-//                    favoriteViewModel
+                    favoriteViewModel.removeFavorite(it.id)
                 }
         )
     }
