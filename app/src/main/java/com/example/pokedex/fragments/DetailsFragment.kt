@@ -8,8 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.example.pokedex.R
+import com.example.pokedex.adapter.PokemonCardAdapter
 import com.example.pokedex.adapter.ViewPagerDetailsAdapter
 import com.example.pokedex.api.APIService
 import com.example.pokedex.api.ServiceBuilder
@@ -18,6 +20,7 @@ import com.example.pokedex.models.Pokemon
 import com.example.pokedex.models.PokemonDetail
 import com.example.pokedex.rxbus.RxBus
 import com.example.pokedex.utils.Constants
+import com.example.pokedex.viewmodels.CreateFavoriteViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
 import com.squareup.picasso.Callback
@@ -36,6 +39,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
     private val binding: FragmentDetailsBinding get() = _binding!!
     private val disposables = CompositeDisposable()
     private var service: APIService = ServiceBuilder.buildService(APIService::class.java)
+    private val favoriteViewModel: CreateFavoriteViewModel by viewModels()
 
     val args: DetailsFragmentArgs by navArgs()
 
@@ -162,7 +166,8 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                     throwable.printStackTrace()
                 })
         )
-
-
+        binding.favoriteCheckbox.setOnCheckedChangeListener { buttonView, isChecked ->
+            favoriteViewModel.createFavorite(pokemon)
+        }
     }
 }
