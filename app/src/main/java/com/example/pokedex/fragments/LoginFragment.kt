@@ -96,7 +96,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     binding.password.error = if (it) "Campo requerido" else null
-
                 }
         )
         disposables.add(
@@ -106,8 +105,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 .subscribe {
                     Log.d("test", it.toString())
                     if(it.isEmpty()) {
-                        // TODO cambiar a error en linea o lo que sea que desee
-                        Toast.makeText(activity, "User not found", Toast.LENGTH_LONG).show()
+                        binding.password.error = "Email or password is incorrect"
+                        binding.emailAdress.error = "Email or password is incorrect"
                     } else {
                         currentUserViewModel.selectItem(it[0])
                         findNavController().navigate(R.id.action_loginFragmentDest_to_mainFragmentDest)

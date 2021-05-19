@@ -4,7 +4,9 @@ import android.content.Context
 import com.example.pokedex.db.PokedexDatabase
 import com.example.pokedex.db.entities.Favorite
 import com.example.pokedex.db.entities.User
+import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.Single
 
 class PokedexRepository(context: Context) {
 
@@ -16,6 +18,10 @@ class PokedexRepository(context: Context) {
 
     fun getUser(email: String, password: String): Observable<List<User>> {
         return db.userDao().getUser(email, password)
+    }
+
+    fun updateUser(trainerId: String, email: String, id: Int): Completable {
+        return db.userDao().updateUser(trainerId, email, id)
     }
 
     fun insertFavorite(favorite: Favorite) {
