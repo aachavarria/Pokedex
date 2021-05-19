@@ -1,7 +1,6 @@
 package com.example.pokedex.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +13,7 @@ import androidx.paging.LoadState
 import com.example.pokedex.R
 import com.example.pokedex.adapter.PokemonCardAdapter
 import com.example.pokedex.databinding.FragmentPokedexBinding
+import com.example.pokedex.db.entities.User
 import com.example.pokedex.utils.Utils.hideKeyboard
 import com.example.pokedex.viewmodels.CurrentUserViewModel
 import com.example.pokedex.viewmodels.FavoriteListViewModel
@@ -36,6 +36,7 @@ class PokedexFragment : Fragment(R.layout.fragment_pokedex) {
     private val favoriteViewModel: FavoriteListViewModel by viewModels()
 
     private lateinit var currentUserViewModel: CurrentUserViewModel
+    private lateinit var currentUser : User
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +54,7 @@ class PokedexFragment : Fragment(R.layout.fragment_pokedex) {
         currentUserViewModel = ViewModelProvider(requireActivity()).get(CurrentUserViewModel::class.java)
 
         currentUserViewModel.selectedItem.observe(viewLifecycleOwner, { user ->
-            Log.d("user", user.toString())
+            currentUser = user
         })
         return binding.root
     }
@@ -86,7 +87,7 @@ class PokedexFragment : Fragment(R.layout.fragment_pokedex) {
         }
 
         disposables.add(
-            favoriteViewModel.favoriteList(1).subscribe {
+            favoriteViewModel.favoriteList(currentUser.id).subscribe {
                 adapter.favoritesList = it
             }
         )
