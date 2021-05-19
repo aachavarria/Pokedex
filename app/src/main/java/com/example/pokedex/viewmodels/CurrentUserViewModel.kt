@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.pokedex.db.entities.User
 
-class ItemViewModel : ViewModel() {
+class CurrentUserViewModel : ViewModel() {
     private val mutableSelectedItem = MutableLiveData<User>()
     val selectedItem: LiveData<User> get() = mutableSelectedItem
 

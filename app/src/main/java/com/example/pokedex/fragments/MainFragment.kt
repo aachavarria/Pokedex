@@ -33,6 +33,5 @@ class MainFragment : Fragment(R.layout.fragment_main){
             childFragmentManager.findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
         binding.bottomNavigationView.setupWithNavController(navController)
-
     }
 }

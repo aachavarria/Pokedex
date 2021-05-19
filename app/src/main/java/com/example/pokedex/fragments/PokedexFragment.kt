@@ -1,6 +1,7 @@
 package com.example.pokedex.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,7 @@ import com.example.pokedex.R
 import com.example.pokedex.adapter.PokemonCardAdapter
 import com.example.pokedex.databinding.FragmentPokedexBinding
 import com.example.pokedex.utils.Utils.hideKeyboard
+import com.example.pokedex.viewmodels.CurrentUserViewModel
 import com.example.pokedex.viewmodels.FavoriteListViewModel
 import com.example.pokedex.viewmodels.PokemonListViewModel
 import com.example.pokedex.viewmodels.PokemonListViewModelType
@@ -33,6 +35,8 @@ class PokedexFragment : Fragment(R.layout.fragment_pokedex) {
     private lateinit var viewModel: PokemonListViewModelType
     private val favoriteViewModel: FavoriteListViewModel by viewModels()
 
+    private lateinit var currentUserViewModel: CurrentUserViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -45,6 +49,12 @@ class PokedexFragment : Fragment(R.layout.fragment_pokedex) {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentPokedexBinding.inflate(inflater, container, false)
+
+        currentUserViewModel = ViewModelProvider(requireActivity()).get(CurrentUserViewModel::class.java)
+
+        currentUserViewModel.selectedItem.observe(viewLifecycleOwner, { user ->
+            Log.d("user", user.toString())
+        })
         return binding.root
     }
 
@@ -64,7 +74,7 @@ class PokedexFragment : Fragment(R.layout.fragment_pokedex) {
                 binding.pokemonCardRecyclerView.isVisible = false
                 binding.progressBar.isVisible = false
                 binding.EmptyResultsView.isVisible = true
-            } else if(loadState.source.refresh is LoadState.Loading) {
+            } else if (loadState.source.refresh is LoadState.Loading) {
                 binding.pokemonCardRecyclerView.isVisible = false
                 binding.EmptyResultsView.isVisible = false
                 binding.progressBar.isVisible = true
@@ -76,7 +86,7 @@ class PokedexFragment : Fragment(R.layout.fragment_pokedex) {
         }
 
         disposables.add(
-            favoriteViewModel.favoriteList(1).subscribe{
+            favoriteViewModel.favoriteList(1).subscribe {
                 adapter.favoritesList = it
             }
         )
@@ -125,7 +135,7 @@ class PokedexFragment : Fragment(R.layout.fragment_pokedex) {
             adapter.favoriteClicked
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    if(it.isChecked == true) {
+                    if (it.isChecked == true) {
                         favoriteViewModel.createFavorite(it)
                     } else {
                         favoriteViewModel.removeFavorite(it.id)

@@ -1,17 +1,17 @@
 package com.example.pokedex.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.pokedex.R
 import com.example.pokedex.databinding.FragmentLoginBinding
-import com.example.pokedex.viewmodels.ItemViewModel
+import com.example.pokedex.viewmodels.CurrentUserViewModel
 import com.example.pokedex.viewmodels.LoginViewModel
 import com.example.pokedex.viewmodels.LoginViewModelType
 import com.jakewharton.rxbinding2.view.RxView
@@ -26,8 +26,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private val disposables = CompositeDisposable()
     lateinit var viewModel: LoginViewModelType
-    private val CurrentUserViewModel: ItemViewModel by viewModels()
-    private val userLoginModel: LoginViewModel by viewModels()
+    private lateinit var currentUserViewModel: CurrentUserViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +39,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
+        currentUserViewModel = ViewModelProvider(requireActivity()).get(CurrentUserViewModel::class.java)
+
         return binding.root
     }
 
@@ -51,6 +52,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         disposables.add(
             RxTextView.textChanges(binding.emailAdress)
                 .skipInitialValue()
@@ -102,11 +104,12 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe {
+                    Log.d("test", it.toString())
                     if(it.isEmpty()) {
                         // TODO cambiar a error en linea o lo que sea que desee
                         Toast.makeText(activity, "User not found", Toast.LENGTH_LONG).show()
                     } else {
-                        CurrentUserViewModel.selectItem(it[0])
+                        currentUserViewModel.selectItem(it[0])
                         findNavController().navigate(R.id.action_loginFragmentDest_to_mainFragmentDest)
                     }
                 }
