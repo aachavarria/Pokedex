@@ -55,6 +55,12 @@ class PokedexFragment : Fragment(R.layout.fragment_pokedex) {
 
         currentUserViewModel.selectedItem.observe(viewLifecycleOwner, { user ->
             currentUser = user
+
+            disposables.add(
+                favoriteViewModel.favoriteList(user.id).subscribe {
+                    adapter.favoritesList = it
+                }
+            )
         })
         return binding.root
     }
@@ -85,12 +91,6 @@ class PokedexFragment : Fragment(R.layout.fragment_pokedex) {
                 binding.pokemonCardRecyclerView.isVisible = true
             }
         }
-
-        disposables.add(
-            favoriteViewModel.favoriteList(currentUser.id).subscribe {
-                adapter.favoritesList = it
-            }
-        )
 
         disposables.add(
             viewModel.outputs.listData
