@@ -17,17 +17,17 @@ class FavoriteListViewModel(application: Application) : AndroidViewModel(applica
         return repository.getFavorites(userId)
     }
 
-    fun removeFavorite(pokemonId: Int) {
+    fun removeFavorite(pokemonId: Int, userId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.removeFavorite(pokemonId)
+            repository.removeFavorite(pokemonId, userId)
         }
     }
 
-    fun createFavorite(pokemon: Pokemon) {
+    fun createFavorite(pokemon: Pokemon, userId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.insertFavorite(
                 Favorite(
-                    userId = 1,
+                    userId = userId,
                     pokemonId = pokemon.id,
                     imageUrl = pokemon.imageUrl,
                     name = pokemon.name,

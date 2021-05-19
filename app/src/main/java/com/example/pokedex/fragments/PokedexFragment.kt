@@ -61,6 +61,17 @@ class PokedexFragment : Fragment(R.layout.fragment_pokedex) {
                     adapter.favoritesList = it
                 }
             )
+            disposables.add(
+                adapter.favoriteClicked
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe {
+                        if (it.isChecked == true) {
+                            favoriteViewModel.createFavorite(it, currentUser.id)
+                        } else {
+                            favoriteViewModel.removeFavorite(it.id, currentUser.id)
+                        }
+                    }
+            )
         })
         return binding.root
     }
@@ -129,18 +140,6 @@ class PokedexFragment : Fragment(R.layout.fragment_pokedex) {
                             it
                         )
                     view.findNavController().navigate(action)
-                }
-        )
-
-        disposables.add(
-            adapter.favoriteClicked
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    if (it.isChecked == true) {
-                        favoriteViewModel.createFavorite(it)
-                    } else {
-                        favoriteViewModel.removeFavorite(it.id)
-                    }
                 }
         )
     }
