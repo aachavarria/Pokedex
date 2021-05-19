@@ -6,10 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import com.example.pokedex.R
 import com.example.pokedex.adapter.ViewFavoriteAdapter
 import com.example.pokedex.databinding.FragmentFavoriteBinding
+import com.example.pokedex.databinding.FragmentPokedexBinding
 import com.example.pokedex.models.Pokemon
+import com.example.pokedex.utils.Utils
+import com.example.pokedex.viewmodels.CurrentUserViewModel
 import com.example.pokedex.viewmodels.FavoriteListViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -22,11 +27,28 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
     private val adapter = ViewFavoriteAdapter()
     private val disposables = CompositeDisposable()
 
+    private lateinit var currentUserViewModel: CurrentUserViewModel
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.pokemonCardRecyclerView.adapter = adapter
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentFavoriteBinding.inflate(inflater, container, false)
+
+        currentUserViewModel = ViewModelProvider(requireActivity()).get(CurrentUserViewModel::class.java)
+
+        currentUserViewModel.selectedItem.observe(viewLifecycleOwner, { user ->
+
         disposables.add(
-            favoriteViewModel.favoriteList(1)
+            adapter.favoriteClicked
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    favoriteViewModel.removeFavorite(it.id, user.id)
+                }
+        )
+        disposables.add(
+            favoriteViewModel.favoriteList(user.id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
@@ -40,24 +62,23 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
                     adapter.favorites = it.map { favorite -> Pokemon(favorite.pokemonId, favorite.name, favorite.imageUrl, favorite.types.split(",")) }
                 }
         )
+        })
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.pokemonCardRecyclerView.adapter = adapter
 
         disposables.add(
-            adapter.favoriteClicked
+            adapter.itemClicked
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    favoriteViewModel.removeFavorite(it.id)
+                    val action = FavoriteFragmentDirections.actionFavoriteFragmentDestToDetailsFragmentDest(it)
+                    view.findNavController().navigate(action)
                 }
         )
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentFavoriteBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.pokedex.R
@@ -16,10 +17,12 @@ import com.example.pokedex.adapter.ViewPagerDetailsAdapter
 import com.example.pokedex.api.APIService
 import com.example.pokedex.api.ServiceBuilder
 import com.example.pokedex.databinding.FragmentDetailsBinding
+import com.example.pokedex.db.entities.User
 import com.example.pokedex.models.Pokemon
 import com.example.pokedex.models.PokemonDetail
 import com.example.pokedex.rxbus.RxBus
 import com.example.pokedex.utils.Constants
+import com.example.pokedex.viewmodels.CurrentUserViewModel
 import com.example.pokedex.viewmodels.FavoriteListViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
@@ -41,6 +44,8 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
     private var service: APIService = ServiceBuilder.buildService(APIService::class.java)
     private val favoriteViewModel: FavoriteListViewModel by viewModels()
 
+    private lateinit var currentUserViewModel: CurrentUserViewModel
+
     val args: DetailsFragmentArgs by navArgs()
 
     override fun onCreateView(
@@ -49,6 +54,29 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
+        val pokemon = args.pokemon
+
+        currentUserViewModel = ViewModelProvider(requireActivity()).get(CurrentUserViewModel::class.java)
+
+        currentUserViewModel.selectedItem.observe(viewLifecycleOwner, { user ->
+            disposables.add(
+                favoriteViewModel.isFavorite(pokemon.id , user.id).subscribe{
+                    binding.favoriteCheckbox.isChecked = it
+                }
+            )
+            binding.favoriteCheckbox.setOnCheckedChangeListener { buttonView, isChecked ->
+                when {
+                    buttonView.isPressed -> {
+                        if (isChecked) {
+                            favoriteViewModel.createFavorite(pokemon, user.id)
+                        } else {
+                            favoriteViewModel.removeFavorite(pokemon.id, user.id)
+                        }
+                    }
+                }
+            }
+        })
+
         return binding.root
     }
 
@@ -165,21 +193,5 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                     throwable.printStackTrace()
                 })
         )
-        disposables.add(
-            favoriteViewModel.isFavorite(pokemon.id , 1).subscribe{
-                binding.favoriteCheckbox.isChecked = it
-            }
-        )
-        binding.favoriteCheckbox.setOnCheckedChangeListener { buttonView, isChecked ->
-            when {
-                buttonView.isPressed -> {
-                    if (isChecked) {
-                        favoriteViewModel.createFavorite(pokemon)
-                    } else {
-                        favoriteViewModel.removeFavorite(pokemon.id)
-                    }
-                }
-            }
-        }
     }
 }

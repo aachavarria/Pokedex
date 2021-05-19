@@ -27,7 +27,11 @@
         android:id="@+id/favoriteFragmentDest"
         android:name="com.example.pokedex.fragments.FavoriteFragment"
         android:label="fragment_favorite"
-        tools:layout="@layout/fragment_favorite" />
+        tools:layout="@layout/fragment_favorite" >
+        <action
+            android:id="@+id/action_favoriteFragmentDest_to_detailsFragmentDest"
+            app:destination="@id/detailsFragmentDest" />
+    </fragment>
     <fragment
         android:id="@+id/trainerFragmentDest"
         android:name="com.example.pokedex.fragments.TrainerFragment"

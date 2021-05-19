@@ -32,8 +32,8 @@ class PokedexRepository(context: Context) {
         return db.favoriteDao().loadAllById(userId)
     }
 
-    fun removeFavorite(pokemonId: Int) {
-        return db.favoriteDao().removeFavorite(pokemonId)
+    fun removeFavorite(pokemonId: Int, userId: Int) {
+        return db.favoriteDao().removeFavorite(pokemonId, userId)
     }
 
     fun isFavorite(pokemonId: Int, userId: Int): Observable<Boolean> {

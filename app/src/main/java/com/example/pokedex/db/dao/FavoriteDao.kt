@@ -14,8 +14,8 @@ interface FavoriteDao {
     @Insert
     fun registerFavorite(favorite: Favorite)
 
-    @Query("DELETE FROM favorites WHERE pokemonId = :pokemonId")
-    fun removeFavorite(pokemonId: Int)
+    @Query("DELETE FROM favorites WHERE pokemonId = :pokemonId AND userId = :userId")
+    fun removeFavorite(pokemonId: Int, userId: Int)
 
     @Query("SELECT * FROM favorites WHERE pokemonId = :pokemonId AND userId = :userId")
     fun isFavorite(pokemonId: Int, userId: Int): Observable<List<Favorite>>
