@@ -11,4 +11,14 @@
     <string name="sign_up">Sign Up</string>
     <string name="new_trainer">New Trainer?</string>
     <string name="no_results_image">no results image</string>
+    <string name="searchPlaceholder">What Pokemon are you looking for?</string>
+    <string name="height">Height</string>
+    <string name="weight">Weight</string>
+    <string name="ability">Ability</string>
+    <string name="category">Category</string>
+    <string name="gender">Gender</string>
+    <string name="breeding">Breeding</string>
+    <string name="egg_groups">Egg Groups</string>
+    <string name="egg_cycle">Egg Cycle</string>
+    <string name="evolutions">evolutions</string>
 </resources>

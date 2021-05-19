@@ -4,46 +4,94 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp"
     tools:context=".fragments.PokedexFragment">
+
+    <ImageView
+        android:id="@+id/pokeball"
+        android:layout_width="210dp"
+        android:layout_height="210dp"
+        android:alpha="0.7"
+        android:rotation="-157"
+        android:rotationX="180"
+        android:rotationY="0"
+        android:src="@drawable/pokeball"
+        android:translationX="82dp"
+        android:translationY="-52dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/blue_500" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/searchField"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:hint="What Pokemon are you looking for?"
-        app:boxStrokeColor="@color/blue_500"
+        android:layout_width="0dp"
+        android:elevation="10dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:hint="@string/searchPlaceholder"
         android:textColorHint="@color/blue_500"
+        app:boxStrokeColor="@color/blue_500"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="20dp"
-        app:startIconDrawable="@drawable/ic_baseline_search_24"
-        app:startIconTint="@color/blue_500">
+        app:endIconMode="password_toggle"
+        app:endIconDrawable="@drawable/ic_baseline_search_24"
+        app:endIconTint="@color/orange_500">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/searchFieldTextInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLines="1"
+            android:imeOptions="actionDone"
             android:inputType="text"
-            android:imeOptions="actionGo"
-         />
+            android:maxLines="1" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/pokemonCardRecyclerView"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/searchField"
-        app:layout_constraintVertical_bias="0.0"
         tools:itemCount="5"
-        android:layout_marginTop="20dp"
         tools:listitem="@layout/pokemon_card" />
+
+    <com.example.pokedex.widgets.EmptyInfoView
+        android:id="@+id/EmptyResultsView"
+        android:layout_width="0dp"
+        android:layout_height="337dp"
+        android:visibility="gone"
+        app:button="Clear Search"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchField"
+        app:subtitle="Try again using a different query"
+        app:title="No matching search results">
+    </com.example.pokedex.widgets.EmptyInfoView>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:indeterminateDuration="2000"
+        android:drawingCacheQuality="high"
+        android:indeterminateDrawable="@drawable/progress_bar"
+        android:indeterminateTint="@color/card_normal"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/searchField"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

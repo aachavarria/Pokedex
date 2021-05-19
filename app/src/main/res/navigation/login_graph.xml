@@ -15,13 +15,21 @@
             app:destination="@id/signUpFragmentDest" />
         <action
             android:id="@+id/action_loginFragmentDest_to_mainFragmentDest"
-            app:destination="@id/mainFragmentDest" />
+            app:destination="@id/mainFragmentDest"
+            app:popUpTo="@id/loginFragmentDest"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/signUpFragmentDest"
         android:name="com.example.pokedex.fragments.SignUpFragment"
         android:label="fragment_sign_up"
-        tools:layout="@layout/fragment_sign_up" />
+        tools:layout="@layout/fragment_sign_up" >
+        <action
+            android:id="@+id/action_signUpFragmentDest_to_loginFragmentDest"
+            app:destination="@id/loginFragmentDest"
+            app:popUpTo="@id/signUpFragmentDest"
+            app:popUpToInclusive="true" />
+    </fragment>
     <fragment
         android:id="@+id/mainFragmentDest"
         android:name="com.example.pokedex.fragments.MainFragment"

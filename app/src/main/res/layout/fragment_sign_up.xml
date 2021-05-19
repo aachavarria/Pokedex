@@ -6,9 +6,31 @@
     android:layout_height="match_parent"
     tools:context=".fragments.LoginFragment">
 
+    <ImageView
+        android:id="@+id/pokeball"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:alpha="0.7"
+        android:rotationX="180"
+        android:src="@drawable/pokeball"
+        android:translationX="100dp"
+        android:translationY="98dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@color/green_500" />
+
+    <ImageView
+        android:id="@+id/header"
+        android:layout_width="0dp"
+        android:layout_height="180dp"
+        android:background="@drawable/header"
+        android:contentDescription="@string/headerImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:id="@+id/linearLayout3"
+        android:id="@+id/linearLayout4"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -17,14 +39,14 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.110000014">
+        app:layout_constraintVertical_bias="0.07999998">
 
-        <TextView
-            android:id="@+id/textView4"
+        <ImageView
+            android:id="@+id/imageView3"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:text="Logo Here" />
+            android:layout_height="100dp"
+            android:src="@drawable/logo" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -42,25 +64,28 @@
 
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/editTextTextTrainer"
+            android:id="@+id/textInputLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="80dp"
             android:layout_marginRight="80dp"
             android:layout_marginBottom="20dp"
+            app:errorEnabled="true"
             android:ems="10">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/trainerId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:hint="Trainer"
+                android:imeOptions="actionNext"
                 android:inputType="text" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/editTextTextEmailAddress"
+            android:id="@+id/textInputLayout3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="80dp"
@@ -69,16 +94,18 @@
             android:ems="10">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/emailAdress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
+                android:imeOptions="actionNext"
                 android:hint="Email"
                 android:inputType="textEmailAddress" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/editTextTextPassword"
+            android:id="@+id/textInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="80dp"
@@ -86,10 +113,12 @@
             android:ems="10">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:hint="Password"
+                android:imeOptions="actionDone"
                 android:inputType="textPassword" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -145,9 +174,10 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/loginButton"
+            android:id="@+id/registerButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:enabled="false"
             android:insetLeft="80dp"
             android:insetRight="80dp"
             android:padding="5dp"

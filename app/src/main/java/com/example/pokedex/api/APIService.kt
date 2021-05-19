@@ -1,5 +1,6 @@
 package com.example.pokedex.api
 
+import com.example.pokedex.models.PokemonDetailResponse
 import com.example.pokedex.models.PokemonResponse
 import io.reactivex.Single
 import retrofit2.http.Body
@@ -12,10 +13,11 @@ interface APIService {
     @POST(" ")
     fun getPokemonList(
         @Body body: String
-//        @Query("offset") offset: Int? = null,
-//        @Query("limit") limit: Int? = null
-    ): Single<PokemonResponse>
+    ) : Single<PokemonResponse>
 
-//    @GET("pokemon/{id}")
-//    fun getPokemonList(@Path("id") id: Int): Single<PokemonResponse>
+    @Headers("Content-Type: application/json")
+    @POST(" ")
+    fun getPokemonDetails(
+        @Body body: String
+    ) : Single<PokemonDetailResponse>
 }

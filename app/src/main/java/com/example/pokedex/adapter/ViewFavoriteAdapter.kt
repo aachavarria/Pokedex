@@ -6,37 +6,35 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.paging.PagingDataAdapter
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pokedex.databinding.PokemonCardBinding
-import com.example.pokedex.db.entities.Favorite
 import com.example.pokedex.models.Pokemon
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
+class ViewFavoriteAdapter: RecyclerView.Adapter<ViewFavoriteAdapter.MyViewHolder>() {
 
-class PokemonCardAdapter : PagingDataAdapter<Pokemon, PokemonCardAdapter.MyViewHolder>(
-    PokemonComparator
-) {
     class MyViewHolder(val binding: PokemonCardBinding) : RecyclerView.ViewHolder(binding.root)
 
-    private val clicksAcceptor = PublishSubject.create<Pokemon>()
     private val favoriteAcceptor = PublishSubject.create<Pokemon>()
-
-    var favoritesList: List<Favorite> = emptyList()
-        set(value) {
-            field = value
-        }
-
-
-    val itemClicked: Observable<Pokemon> = clicksAcceptor.hide()
     val favoriteClicked: Observable<Pokemon> = favoriteAcceptor.hide()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        return MyViewHolder(
+    private val clicksAcceptor = PublishSubject.create<Pokemon>()
+    val itemClicked: Observable<Pokemon> = clicksAcceptor.hide()
+
+    var favorites: List<Pokemon> = emptyList()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): ViewFavoriteAdapter.MyViewHolder {
+        return ViewFavoriteAdapter.MyViewHolder(
             PokemonCardBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
@@ -46,7 +44,8 @@ class PokemonCardAdapter : PagingDataAdapter<Pokemon, PokemonCardAdapter.MyViewH
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val pokemon = getItem(position)
+        val pokemon = favorites[position]
+
         holder.itemView.setOnClickListener {
             if (pokemon != null) {
                 clicksAcceptor.onNext(pokemon)
@@ -54,18 +53,14 @@ class PokemonCardAdapter : PagingDataAdapter<Pokemon, PokemonCardAdapter.MyViewH
         }
 
         holder.binding.favoriteIcon.setOnCheckedChangeListener { checkBox, isChecked ->
-            when {
-                checkBox.isPressed -> {
-                    pokemon?.let {
-                        favoriteAcceptor.onNext(Pokemon(it.id,it.name, it.imageUrl, it.types, isChecked))
-                    }
-                }
+            if (pokemon != null && !isChecked) {
+                favoriteAcceptor.onNext(pokemon)
             }
-
         }
 
         Picasso.get().load(pokemon?.imageUrl).fit().noFade().centerInside()
-            .into(holder.binding.imageView, object : Callback {
+            .into(holder.binding.imageView, object :
+                Callback {
                 override fun onSuccess() {
                     holder.binding.imageView.alpha = 0f
                     holder.binding.imageView.animate().setDuration(200).alpha(1f).start()
@@ -74,12 +69,7 @@ class PokemonCardAdapter : PagingDataAdapter<Pokemon, PokemonCardAdapter.MyViewH
                 override fun onError(e: Exception?) {
                 }
             })
-
         if (pokemon != null) {
-
-            val isFavorite = favoritesList.find { favorite -> favorite.pokemonId == pokemon.id }
-            holder.binding.favoriteIcon.isChecked = isFavorite != null
-
             holder.binding.textView.text = pokemon.name.capitalize()
             val pokemonNumberText = when (pokemon.id) {
                 in 1..9 -> "#00" + pokemon.id.toString()
@@ -91,6 +81,7 @@ class PokemonCardAdapter : PagingDataAdapter<Pokemon, PokemonCardAdapter.MyViewH
 
             holder.binding.textView2.text = pokemonNumberText
             holder.binding.type1.text = pokemon.types[0].capitalize()
+            holder.binding.favoriteIcon.isChecked = true
             val context: Context = holder.binding.card.context
             val cardColorID: Int = holder.binding.card.resources.getIdentifier(
                 "card_${pokemon.types[0]}",
@@ -125,14 +116,9 @@ class PokemonCardAdapter : PagingDataAdapter<Pokemon, PokemonCardAdapter.MyViewH
         }
     }
 
-    object PokemonComparator : DiffUtil.ItemCallback<Pokemon>() {
-        override fun areItemsTheSame(oldItem: Pokemon, newItem: Pokemon): Boolean {
-            return oldItem.id == newItem.id
-        }
-
-        override fun areContentsTheSame(oldItem: Pokemon, newItem: Pokemon): Boolean {
-            return oldItem == newItem
-        }
+    override fun getItemCount(): Int {
+        return favorites.size
     }
-
 }
+
+
