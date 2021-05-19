@@ -29,7 +29,6 @@ class PokemonCardAdapter : PagingDataAdapter<Pokemon, PokemonCardAdapter.MyViewH
     var favoritesList: List<Favorite> = emptyList()
         set(value) {
             field = value
-//            notifyDataSetChanged()
         }
 
 
