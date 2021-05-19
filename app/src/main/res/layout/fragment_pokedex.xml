@@ -4,24 +4,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp"
     tools:context=".fragments.PokedexFragment">
+
+    <ImageView
+        android:id="@+id/pokeball"
+        android:layout_width="210dp"
+        android:layout_height="210dp"
+        android:alpha="0.7"
+        android:rotation="-157"
+        android:rotationX="180"
+        android:rotationY="0"
+        android:src="@drawable/pokeball"
+        android:translationX="82dp"
+        android:translationY="-52dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/blue_500" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/searchField"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
+        android:elevation="10dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
         android:hint="@string/searchPlaceholder"
         android:textColorHint="@color/blue_500"
         app:boxStrokeColor="@color/blue_500"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:startIconDrawable="@drawable/ic_baseline_search_24"
-        app:startIconTint="@color/blue_500">
+        app:endIconMode="password_toggle"
+        app:endIconDrawable="@drawable/ic_baseline_search_24"
+        app:endIconTint="@color/orange_500">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/searchFieldTextInput"
@@ -36,7 +53,9 @@
         android:id="@+id/pokemonCardRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
