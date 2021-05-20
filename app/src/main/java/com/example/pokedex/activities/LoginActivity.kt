@@ -1,8 +1,10 @@
 package com.example.pokedex.activities
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.pokedex.databinding.LoginActivityBinding
+
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: LoginActivityBinding
@@ -12,5 +14,8 @@ class LoginActivity : AppCompatActivity() {
         binding = LoginActivityBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+    }
+    override fun onBackPressed() {
+        finishAffinity()
     }
 }

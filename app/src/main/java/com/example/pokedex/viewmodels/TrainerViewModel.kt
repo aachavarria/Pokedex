@@ -22,6 +22,7 @@ interface TrainerViewModelInputs {
     val trainerId: Observer<String>
     val email: Observer<String>
     val updateClicked: Observer<Unit>
+    val logOutClicked: Observer<Unit>
 }
 
 //outputs
@@ -49,6 +50,7 @@ class TrainerViewModel(application: Application) : AndroidViewModel(application)
     override val trainerId = BehaviorSubject.create<String>()
     override val email = BehaviorSubject.create<String>()
     override val updateClicked = PublishSubject.create<Unit>()
+    override val logOutClicked = PublishSubject.create<Unit>()
 
     //outputs
     override var trainerIdError: Observable<Boolean> = Observable.empty()

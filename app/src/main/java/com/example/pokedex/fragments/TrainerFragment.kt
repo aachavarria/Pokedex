@@ -76,7 +76,7 @@ class TrainerFragment : Fragment(R.layout.fragment_trainer) {
                                         .subscribeOn(Schedulers.io())
                                         .subscribe {
                                             val intent = Intent (activity, LoginActivity::class.java)
-                                            getActivity()?.startActivity(intent)
+                                            activity?.startActivity(intent)
                                         }
                             }
             )
@@ -118,6 +118,14 @@ class TrainerFragment : Fragment(R.layout.fragment_trainer) {
                         .subscribe{
                             binding.updateButton.isEnabled = it
                         }
+        )
+        disposables.add(
+            RxView.clicks(binding.logOutButton)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe{
+                    val intent = Intent (activity, LoginActivity::class.java)
+                    activity?.startActivity(intent)
+                }
         )
     }
 }
